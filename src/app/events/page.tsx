@@ -34,20 +34,23 @@ export default function EventsPage() {
               <Card key={i} variant="interactive" padding="lg">
                 <CardHeader>
                   <CardTitle>{event.title}</CardTitle>
-                  <CardDescription className="space-y-2 mt-2">
+
+                  <div className="space-y-2 mt-2">
                     <div className="flex items-center gap-2 text-foreground-muted">
                       <Calendar className="h-4 w-4" />
                       <span>{event.date}</span>
                     </div>
+
                     <div className="flex items-center gap-2 text-foreground-muted">
                       <Clock className="h-4 w-4" />
                       <span>{event.time}</span>
                     </div>
+
                     <div className="flex items-center gap-2 text-foreground-muted">
                       <MapPin className="h-4 w-4" />
                       <span>{event.location}</span>
                     </div>
-                  </CardDescription>
+                  </div>
                 </CardHeader>
                 <CardContent className="pt-4">
                   <Button className="w-full">Register Now</Button>
