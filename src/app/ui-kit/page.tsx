@@ -9,16 +9,31 @@ import {
   MessageCircle, ThumbsUp, Send, Camera, Image as ImageIcon,
   Check, AlertCircle, Info, Loader2, RefreshCw, ExternalLink,
   Copy, Download, Upload, Filter, SlidersHorizontal, Grid, List,
-  Zap, Crown, Award, Target, TrendingUp, BarChart2
+  Zap, Crown, Award, Target, TrendingUp, BarChart2, Trash2, Edit3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SegmentedControl, FilterChips } from "@/components/ui/segmented-control";
-import { Sheet, Modal } from "@/components/ui/sheet";
+import { 
+  Sheet, Modal, ActionSheet, SnapSheet, DetailSheet, 
+  MultiStepSheet, CommerceSheet, MatchDetailsSheet 
+} from "@/components/ui/sheet";
 import { EmptyState, LoadingState, Skeleton, SkeletonCard, SkeletonList } from "@/components/ui/states";
 import { BottomNav, MobileHeader, Sidebar, DesktopHeader, useSidebarState } from "@/components/shell/navigation";
+import { 
+  ContentRail, MatchRail, StoryRail, MediaRail, MerchRail, 
+  CompactCardRail, HeroCarousel 
+} from "@/components/ui/carousel";
+import { 
+  HorizontalDateSelector, FullscreenCalendar, InlineCalendar, 
+  DatePickerInput, MatchCalendar 
+} from "@/components/ui/date-picker";
+import { 
+  VerticalTimeline, MatchDayAgenda, StadiumSchedule, 
+  LiveEventTracker, CountdownBlock, KickoffIndicator, ReminderCard 
+} from "@/components/ui/timeline";
 
 // ============================================
 // SECTION WRAPPER
@@ -877,7 +892,7 @@ function WalletCard({
         <div>
           <p className="text-overline mb-1">Balance</p>
           <p className="text-display-lg text-foreground">
-            {currency === "USD" && "$"}{balance.toLocaleString()}
+            {currency === "USD" && "$"}{balance.toLocaleString("en-US")}
             <span className="text-foreground-muted text-heading-md ml-1">{currency}</span>
           </p>
         </div>
@@ -1106,7 +1121,7 @@ function PointsDisplay({ points }: { points: number }) {
   return (
     <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-warning/10 border border-warning/20">
       <Star className="h-5 w-5 text-warning fill-current" />
-      <span className="text-heading-md text-foreground font-semibold">{points.toLocaleString()}</span>
+      <span className="text-heading-md text-foreground font-semibold">{points.toLocaleString("en-US")}</span>
       <span className="text-body-sm text-foreground-muted">points</span>
     </div>
   );
@@ -1160,6 +1175,49 @@ export default function UIKitPage() {
   const [segmentValue, setSegmentValue] = useState("all");
   const [chipValue, setChipValue] = useState("trending");
   const [selectValue, setSelectValue] = useState("");
+  
+  // New sheet states
+  const [actionSheetOpen, setActionSheetOpen] = useState(false);
+  const [snapSheetOpen, setSnapSheetOpen] = useState(false);
+  const [detailSheetOpen, setDetailSheetOpen] = useState(false);
+  const [multiStepSheetOpen, setMultiStepSheetOpen] = useState(false);
+  const [commerceSheetOpen, setCommerceSheetOpen] = useState(false);
+  const [matchDetailsSheetOpen, setMatchDetailsSheetOpen] = useState(false);
+  
+  // Date picker states
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+
+  // Sample data for demos
+  const sampleDates = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    const isToday = i === 0;
+    const isTomorrow = i === 1;
+    return {
+      date,
+      label: date.getDate().toString(),
+      sublabel: isToday ? "Today" : isTomorrow ? "Tomorrow" : date.toLocaleDateString("en-US", { weekday: "short" }),
+      hasEvent: i === 0 || i === 2 || i === 5,
+      isLive: i === 0,
+    };
+  });
+
+  const sampleTimelineEvents = [
+    { id: "1", time: "14:00", title: "Stadium Gates Open", status: "completed" as const, type: "default" as const },
+    { id: "2", time: "16:00", title: "Fan Zone Activities", description: "Meet & greet with legends", status: "completed" as const, type: "entertainment" as const },
+    { id: "3", time: "17:30", title: "Pre-Match Show", status: "active" as const, type: "entertainment" as const, isHighlighted: true },
+    { id: "4", time: "18:00", title: "Team Warm-Up", status: "upcoming" as const },
+    { id: "5", time: "19:00", title: "Kickoff", status: "upcoming" as const, type: "kickoff" as const },
+    { id: "6", time: "19:45", title: "Halftime Entertainment", status: "upcoming" as const, type: "halftime" as const },
+  ];
+
+  const sampleLiveEvents = [
+    { id: "1", minute: "12", type: "goal" as const, title: "GOAL! Header from corner", team: "home" as const, player: "M. Rashford" },
+    { id: "2", minute: "34", type: "card" as const, title: "Yellow Card - Foul", team: "away" as const, player: "J. Smith" },
+    { id: "3", minute: "45", type: "substitution" as const, title: "Tactical Change", team: "home" as const, player: "B. Fernandes In" },
+    { id: "4", minute: "52", type: "goal" as const, title: "GOAL! Long range strike", team: "home" as const, player: "B. Fernandes" },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -1408,9 +1466,9 @@ export default function UIKitPage() {
           {/* ============================================ */}
           <Section 
             title="Mobile Interactions" 
-            description="Bottom sheets, modals, and overlay patterns."
+            description="Premium bottom sheets, modals, and overlay patterns."
           >
-            <SubSection title="Bottom Sheet">
+            <SubSection title="Basic Bottom Sheet">
               <Button onClick={() => setSheetOpen(true)}>Open Bottom Sheet</Button>
               <Sheet
                 open={sheetOpen}
@@ -1433,6 +1491,187 @@ export default function UIKitPage() {
                   </button>
                 </div>
               </Sheet>
+            </SubSection>
+
+            <SubSection title="Action Sheet">
+              <Button onClick={() => setActionSheetOpen(true)}>Open Action Sheet</Button>
+              <ActionSheet
+                open={actionSheetOpen}
+                onClose={() => setActionSheetOpen(false)}
+                title="What would you like to do?"
+                actions={[
+                  { id: "share", label: "Share", icon: <Share2 className="h-5 w-5" />, onSelect: () => {} },
+                  { id: "save", label: "Save to Collection", icon: <Bookmark className="h-5 w-5" />, onSelect: () => {} },
+                  { id: "edit", label: "Edit Details", icon: <Edit3 className="h-5 w-5" />, onSelect: () => {} },
+                  { id: "delete", label: "Delete", icon: <Trash2 className="h-5 w-5" />, destructive: true, onSelect: () => {} },
+                ]}
+              />
+            </SubSection>
+
+            <SubSection title="Snap Sheet (Draggable)">
+              <Button onClick={() => setSnapSheetOpen(true)}>Open Snap Sheet</Button>
+              <SnapSheet
+                open={snapSheetOpen}
+                onClose={() => setSnapSheetOpen(false)}
+                title="Match Statistics"
+                description="Drag to expand or collapse"
+                initialSnap="half"
+              >
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted">
+                    <span className="text-body-sm text-foreground">Possession</span>
+                    <span className="text-heading-sm text-foreground">62% - 38%</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted">
+                    <span className="text-body-sm text-foreground">Shots on Target</span>
+                    <span className="text-heading-sm text-foreground">8 - 4</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted">
+                    <span className="text-body-sm text-foreground">Corners</span>
+                    <span className="text-heading-sm text-foreground">6 - 3</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 rounded-xl bg-muted">
+                    <span className="text-body-sm text-foreground">Fouls</span>
+                    <span className="text-heading-sm text-foreground">12 - 15</span>
+                  </div>
+                </div>
+              </SnapSheet>
+            </SubSection>
+
+            <SubSection title="Detail Sheet">
+              <Button onClick={() => setDetailSheetOpen(true)}>Open Detail Sheet</Button>
+              <DetailSheet
+                open={detailSheetOpen}
+                onClose={() => setDetailSheetOpen(false)}
+                title="Player of the Match"
+                subtitle="Outstanding performance"
+                badge={<LiveBadge size="sm" />}
+                actions={
+                  <div className="flex gap-3">
+                    <Button variant="secondary" className="flex-1">View Stats</Button>
+                    <Button className="flex-1">Follow Player</Button>
+                  </div>
+                }
+              >
+                <div className="space-y-4">
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="p-3 rounded-xl bg-muted">
+                      <p className="text-display-md text-foreground">2</p>
+                      <p className="text-caption">Goals</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-muted">
+                      <p className="text-display-md text-foreground">1</p>
+                      <p className="text-caption">Assists</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-muted">
+                      <p className="text-display-md text-foreground">9.2</p>
+                      <p className="text-caption">Rating</p>
+                    </div>
+                  </div>
+                </div>
+              </DetailSheet>
+            </SubSection>
+
+            <SubSection title="Multi-Step Sheet">
+              <Button onClick={() => setMultiStepSheetOpen(true)}>Open Multi-Step Sheet</Button>
+              <MultiStepSheet
+                open={multiStepSheetOpen}
+                onClose={() => setMultiStepSheetOpen(false)}
+                steps={[
+                  { 
+                    id: "select", 
+                    title: "Select Seats", 
+                    content: (
+                      <div className="space-y-3">
+                        {["Premium", "Standard", "Economy"].map((tier) => (
+                          <button key={tier} className="w-full p-4 rounded-xl bg-muted hover:bg-card-hover text-left transition-colors">
+                            <p className="text-body-md font-medium text-foreground">{tier}</p>
+                            <p className="text-caption text-foreground-muted">Starting from $85</p>
+                          </button>
+                        ))}
+                      </div>
+                    )
+                  },
+                  { 
+                    id: "quantity", 
+                    title: "How Many Tickets?", 
+                    content: (
+                      <div className="flex items-center justify-center gap-6 py-8">
+                        <button className="h-12 w-12 rounded-full bg-muted text-foreground flex items-center justify-center">
+                          <Minus className="h-5 w-5" />
+                        </button>
+                        <span className="text-display-lg text-foreground">2</span>
+                        <button className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+                          <Plus className="h-5 w-5" />
+                        </button>
+                      </div>
+                    )
+                  },
+                  { 
+                    id: "confirm", 
+                    title: "Confirm Purchase", 
+                    content: (
+                      <div className="space-y-4">
+                        <div className="p-4 rounded-xl bg-muted">
+                          <p className="text-body-sm text-foreground-muted">Total</p>
+                          <p className="text-display-md text-foreground">$170.00</p>
+                        </div>
+                      </div>
+                    )
+                  },
+                ]}
+                onComplete={() => {}}
+              />
+            </SubSection>
+
+            <SubSection title="Commerce Sheet">
+              <Button onClick={() => setCommerceSheetOpen(true)}>Open Commerce Sheet</Button>
+              <CommerceSheet
+                open={commerceSheetOpen}
+                onClose={() => setCommerceSheetOpen(false)}
+                title="Season Pass 2024/25"
+                subtitle="All home matches included"
+                price="$599"
+                originalPrice="$799"
+                features={[
+                  "Access to all 19 home matches",
+                  "Priority ticket booking",
+                  "10% discount on merchandise",
+                  "Exclusive member events",
+                ]}
+                onPurchase={() => setCommerceSheetOpen(false)}
+                purchaseLabel="Buy Season Pass"
+              />
+            </SubSection>
+
+            <SubSection title="Match Details Sheet">
+              <Button onClick={() => setMatchDetailsSheetOpen(true)}>Open Match Details</Button>
+              <MatchDetailsSheet
+                open={matchDetailsSheetOpen}
+                onClose={() => setMatchDetailsSheetOpen(false)}
+                homeTeam={{ name: "Manchester United" }}
+                awayTeam={{ name: "Liverpool" }}
+                score={{ home: 2, away: 1 }}
+                status="live"
+                date="Today"
+                time="67'"
+                venue="Old Trafford"
+                competition="Premier League"
+                onBuyTickets={() => {}}
+                onSetReminder={() => {}}
+              >
+                <div className="space-y-4">
+                  <h4 className="text-heading-sm text-foreground">Recent Events</h4>
+                  <div className="space-y-2">
+                    {sampleLiveEvents.slice(0, 2).map((event) => (
+                      <div key={event.id} className="flex items-center gap-3 p-3 rounded-xl bg-muted">
+                        <span className="text-caption font-mono text-foreground-muted">{event.minute}&apos;</span>
+                        <span className="text-body-sm text-foreground">{event.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </MatchDetailsSheet>
             </SubSection>
 
             <SubSection title="Modal">
@@ -1688,6 +1927,138 @@ export default function UIKitPage() {
           </Section>
 
           {/* ============================================ */}
+          {/* DATE PICKER SECTION */}
+          {/* ============================================ */}
+          <Section 
+            title="Date Pickers" 
+            description="Premium mobile-first date selection patterns."
+          >
+            <SubSection title="Horizontal Date Selector">
+              <HorizontalDateSelector
+                dates={sampleDates}
+                selectedDate={selectedDate}
+                onSelect={setSelectedDate}
+              />
+            </SubSection>
+
+            <SubSection title="Date Picker Input">
+              <div className="max-w-sm">
+                <DatePickerInput
+                  value={selectedDate}
+                  onChange={setSelectedDate}
+                  placeholder="Select match date"
+                />
+              </div>
+            </SubSection>
+
+            <SubSection title="Inline Calendar">
+              <div className="max-w-xs">
+                <InlineCalendar
+                  selectedDate={selectedDate}
+                  onSelect={setSelectedDate}
+                  eventDates={[new Date(), new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)]}
+                  liveDates={[new Date()]}
+                />
+              </div>
+            </SubSection>
+
+            <SubSection title="Fullscreen Calendar">
+              <Button onClick={() => setCalendarOpen(true)}>Open Calendar</Button>
+              <FullscreenCalendar
+                open={calendarOpen}
+                onClose={() => setCalendarOpen(false)}
+                selectedDate={selectedDate}
+                onSelect={setSelectedDate}
+                eventDates={sampleDates.filter(d => d.hasEvent).map(d => d.date)}
+                liveDates={sampleDates.filter(d => d.isLive).map(d => d.date)}
+              />
+            </SubSection>
+          </Section>
+
+          {/* ============================================ */}
+          {/* TIMELINE SECTION */}
+          {/* ============================================ */}
+          <Section 
+            title="Timelines & Agendas" 
+            description="Event schedules, live trackers, and countdown components."
+          >
+            <SubSection title="Vertical Timeline">
+              <div className="max-w-lg">
+                <VerticalTimeline events={sampleTimelineEvents} />
+              </div>
+            </SubSection>
+
+            <SubSection title="Match Day Agenda">
+              <div className="max-w-lg">
+                <MatchDayAgenda
+                  events={sampleTimelineEvents}
+                  matchTime="19:00"
+                  venue="Old Trafford"
+                />
+              </div>
+            </SubSection>
+
+            <SubSection title="Live Event Tracker">
+              <div className="max-w-lg">
+                <LiveEventTracker
+                  events={sampleLiveEvents}
+                  homeTeam="Manchester United"
+                  awayTeam="Liverpool"
+                  currentMinute="67"
+                />
+              </div>
+            </SubSection>
+
+            <SubSection title="Countdown Block">
+              <div className="max-w-md">
+                <CountdownBlock
+                  targetDate={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)}
+                  title="Next Match"
+                  subtitle="Manchester United vs Chelsea"
+                  size="lg"
+                />
+              </div>
+            </SubSection>
+
+            <SubSection title="Kickoff Indicators">
+              <div className="flex flex-wrap gap-4">
+                <KickoffIndicator time="19:00" date="Saturday, Dec 14" />
+                <KickoffIndicator time="67'" date="In Progress" isLive />
+              </div>
+            </SubSection>
+
+            <SubSection title="Reminder Cards">
+              <div className="max-w-sm space-y-3">
+                <ReminderCard
+                  title="15 minutes before kickoff"
+                  time="18:45"
+                  isSet={true}
+                  onToggle={() => {}}
+                />
+                <ReminderCard
+                  title="1 hour before kickoff"
+                  time="18:00"
+                  isSet={false}
+                  onToggle={() => {}}
+                />
+              </div>
+            </SubSection>
+
+            <SubSection title="Stadium Schedule">
+              <div className="max-w-lg">
+                <StadiumSchedule
+                  items={[
+                    { id: "1", time: "14:00", title: "Gates Open", location: "All entrances", type: "gate" },
+                    { id: "2", time: "15:00", title: "Fan Zone Food Court", location: "North Stand", type: "food", waitTime: "5 min" },
+                    { id: "3", time: "16:00", title: "Club Shop", location: "Megastore", type: "shop" },
+                    { id: "4", time: "17:30", title: "Pre-Match Show", location: "Main Pitch", type: "entertainment" },
+                  ]}
+                />
+              </div>
+            </SubSection>
+          </Section>
+
+          {/* ============================================ */}
           {/* COMMUNITY SECTION */}
           {/* ============================================ */}
           <Section 
@@ -1834,15 +2205,21 @@ export default function UIKitPage() {
           {/* CAROUSEL PATTERNS SECTION */}
           {/* ============================================ */}
           <Section 
-            title="Carousel Patterns" 
-            description="Horizontal scrolling rails and snap sections."
+            title="Premium Carousels" 
+            description="Production-level carousels with drag, snap, and touch momentum."
           >
             <SubSection title="Content Rail">
-              <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory hide-scrollbar">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Card key={i} variant="interactive" padding="none" className="w-72 shrink-0 snap-start">
-                    <div className="aspect-video bg-gradient-to-br from-primary/10 to-transparent flex items-center justify-center">
+              <ContentRail
+                title="Featured Highlights"
+                subtitle="Top moments from this week"
+                seeAllHref="#"
+                fadeEdges
+              >
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card key={i} variant="interactive" padding="none">
+                    <div className="aspect-video bg-gradient-to-br from-primary/10 to-transparent flex items-center justify-center relative">
                       <Play className="h-12 w-12 text-foreground-subtle" />
+                      <span className="absolute bottom-2 right-2 px-2 py-1 rounded bg-background/80 text-caption">3:45</span>
                     </div>
                     <div className="p-4">
                       <h4 className="text-body-md font-medium text-foreground">Match Highlights #{i}</h4>
@@ -1850,37 +2227,98 @@ export default function UIKitPage() {
                     </div>
                   </Card>
                 ))}
-              </div>
+              </ContentRail>
             </SubSection>
 
-            <SubSection title="Card Rail">
-              <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory hide-scrollbar">
+            <SubSection title="Match Rail">
+              <MatchRail title="Today&apos;s Matches">
                 <MatchCard
-                  homeTeam={{ name: "Team A" }}
-                  awayTeam={{ name: "Team B" }}
-                  homeScore={2}
-                  awayScore={1}
+                  homeTeam={{ name: "Barcelona" }}
+                  awayTeam={{ name: "Real Madrid" }}
+                  homeScore={3}
+                  awayScore={2}
                   status="live"
-                  time="65'"
-                  competition="League"
+                  time="78'"
+                  competition="La Liga"
+                  variant="featured"
                 />
                 <MatchCard
-                  homeTeam={{ name: "Team C" }}
-                  awayTeam={{ name: "Team D" }}
+                  homeTeam={{ name: "Bayern Munich" }}
+                  awayTeam={{ name: "Dortmund" }}
                   status="upcoming"
-                  time="18:00"
-                  competition="Cup"
+                  time="20:00"
+                  competition="Bundesliga"
                 />
                 <MatchCard
-                  homeTeam={{ name: "Team E" }}
-                  awayTeam={{ name: "Team F" }}
-                  homeScore={0}
+                  homeTeam={{ name: "PSG" }}
+                  awayTeam={{ name: "Lyon" }}
+                  homeScore={1}
                   awayScore={0}
                   status="finished"
                   time="FT"
-                  competition="League"
+                  competition="Ligue 1"
                 />
-              </div>
+                <MatchCard
+                  homeTeam={{ name: "Juventus" }}
+                  awayTeam={{ name: "AC Milan" }}
+                  status="upcoming"
+                  time="21:45"
+                  competition="Serie A"
+                />
+              </MatchRail>
+            </SubSection>
+
+            <SubSection title="Story Rail">
+              <StoryRail>
+                <StoryItem name="Live Match" isLive />
+                <StoryItem name="Fan Zone" hasUnread />
+                <StoryItem name="Highlights" hasUnread />
+                <StoryItem name="Training" />
+                <StoryItem name="Behind Scenes" />
+                <StoryItem name="Interviews" />
+                <StoryItem name="Matchday" />
+                <StoryItem name="Stats" />
+              </StoryRail>
+            </SubSection>
+
+            <SubSection title="Media Rail">
+              <MediaRail title="Video Gallery" aspectRatio="video">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="relative aspect-video rounded-xl bg-muted overflow-hidden group cursor-pointer">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                        <Play className="h-6 w-6 text-white fill-white" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <p className="text-body-sm font-medium text-white">Video Title {i}</p>
+                      <p className="text-caption text-white/70">1.2M views</p>
+                    </div>
+                  </div>
+                ))}
+              </MediaRail>
+            </SubSection>
+
+            <SubSection title="Merchandise Rail">
+              <MerchRail title="Shop" seeAllHref="#">
+                <MerchCard name="Home Jersey 24/25" price="$89.99" tag="New" />
+                <MerchCard name="Training Kit" price="$59.99" originalPrice="$79.99" tag="Sale" />
+                <MerchCard name="Fan Scarf" price="$24.99" />
+                <MerchCard name="Cap Collection" price="$34.99" />
+                <MerchCard name="Retro Jersey" price="$99.99" tag="Limited" />
+              </MerchRail>
+            </SubSection>
+
+            <SubSection title="Compact Card Rail">
+              <CompactCardRail title="Quick Stats">
+                {["Goals", "Assists", "Clean Sheets", "Wins", "Points"].map((stat) => (
+                  <div key={stat} className="p-4 rounded-xl bg-card border border-border/40 text-center">
+                    <p className="text-display-md text-foreground">{Math.floor(Math.random() * 50 + 10)}</p>
+                    <p className="text-caption text-foreground-muted">{stat}</p>
+                  </div>
+                ))}
+              </CompactCardRail>
             </SubSection>
           </Section>
 
