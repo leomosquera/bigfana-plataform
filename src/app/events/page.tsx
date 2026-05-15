@@ -1,34 +1,35 @@
 import { AppShell, PageContainer, Section } from "@/components/shell";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button } from "@/components/ui";
+import { Card, CardHeader, CardTitle, CardContent, Button } from "@/components/ui";
 import { Calendar, MapPin, Clock } from "lucide-react";
+import { copy } from "@/lib/i18n";
 
 export default function EventsPage() {
   return (
-    <AppShell title="Events">
+    <AppShell title={copy.events.pageTitle}>
       <PageContainer className="space-y-8">
         <Section
-          title="Upcoming Events"
-          subtitle="Fan experiences and gatherings"
+          title={copy.events.upcomingEvents}
+          subtitle={copy.events.upcomingEventsSubtitle}
         >
           <div className="grid gap-4">
             {[
               {
                 title: "Fan Meet & Greet",
-                date: "Dec 20, 2024",
+                date: "20 Dic, 2024",
                 time: "18:00",
-                location: "Stadium North Gate",
+                location: "Puerta Norte del Estadio",
               },
               {
-                title: "Watch Party: El Clasico",
-                date: "Dec 21, 2024",
+                title: "Watch Party: El Clásico",
+                date: "21 Dic, 2024",
                 time: "21:00",
                 location: "Fan Zone Arena",
               },
               {
-                title: "Youth Academy Open Day",
-                date: "Dec 22, 2024",
+                title: "Día Abierto de la Academia",
+                date: "22 Dic, 2024",
                 time: "10:00",
-                location: "Training Ground",
+                location: "Centro de Entrenamiento",
               },
             ].map((event, i) => (
               <Card key={i} variant="interactive" padding="lg">
@@ -53,7 +54,7 @@ export default function EventsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-4">
-                  <Button className="w-full">Register Now</Button>
+                  <Button className="w-full">{copy.common.registerNow}</Button>
                 </CardContent>
               </Card>
             ))}

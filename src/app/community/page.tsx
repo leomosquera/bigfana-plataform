@@ -1,17 +1,18 @@
 import { AppShell, PageContainer, Section } from "@/components/shell";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, EmptyState } from "@/components/ui";
 import { Users, MessageCircle, TrendingUp } from "lucide-react";
+import { copy } from "@/lib/i18n";
 
 export default function CommunityPage() {
   return (
-    <AppShell title="Community">
+    <AppShell title={copy.community.pageTitle}>
       <PageContainer className="space-y-8">
         {/* Community Stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { icon: Users, label: "Members", value: "12.4K" },
-            { icon: MessageCircle, label: "Posts Today", value: "847" },
-            { icon: TrendingUp, label: "Trending", value: "#ElClasico" },
+            { icon: Users, label: copy.community.members, value: "12.4K" },
+            { icon: MessageCircle, label: copy.community.postsToday, value: "847" },
+            { icon: TrendingUp, label: copy.common.trending, value: "#ElClásico" },
           ].map((stat) => (
             <Card key={stat.label} variant="glass" padding="md" className="text-center">
               <stat.icon className="h-5 w-5 mx-auto mb-2 text-primary" />
@@ -22,16 +23,16 @@ export default function CommunityPage() {
         </div>
 
         <Section
-          title="Fan Groups"
-          subtitle="Connect with supporters"
-          action={<Button variant="ghost" size="sm">See All</Button>}
+          title={copy.community.fanGroups}
+          subtitle={copy.community.fanGroupsSubtitle}
+          action={<Button variant="ghost" size="sm">{copy.common.seeAll}</Button>}
         >
           <div className="grid gap-4 md:grid-cols-2">
             {[
-              { name: "Supporters Club", members: "5.2K", posts: 234 },
-              { name: "Match Day Chat", members: "3.1K", posts: 89 },
-              { name: "Transfer Rumors", members: "8.7K", posts: 456 },
-              { name: "Tactical Analysis", members: "2.4K", posts: 67 },
+              { name: "Club de Hinchas", members: "5.2K", posts: 234 },
+              { name: "Chat del Partido", members: "3.1K", posts: 89 },
+              { name: "Rumores de Fichajes", members: "8.7K", posts: 456 },
+              { name: "Análisis Táctico", members: "2.4K", posts: 67 },
             ].map((group) => (
               <Card key={group.name} variant="interactive" padding="md">
                 <CardHeader>
@@ -41,14 +42,14 @@ export default function CommunityPage() {
                     </div>
                     <div>
                       <CardTitle className="text-heading-sm">{group.name}</CardTitle>
-                      <CardDescription>{group.members} members</CardDescription>
+                      <CardDescription>{group.members} {copy.community.members.toLowerCase()}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-caption">{group.posts} posts today</span>
-                    <Button variant="secondary" size="sm">Join</Button>
+                    <span className="text-caption">{group.posts} {copy.community.postsCount}</span>
+                    <Button variant="secondary" size="sm">{copy.common.join}</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -56,12 +57,12 @@ export default function CommunityPage() {
           </div>
         </Section>
 
-        <Section title="Recent Discussions">
+        <Section title={copy.community.recentDiscussions}>
           <EmptyState
             variant="default"
-            title="Join the conversation"
-            description="Sign in to participate in discussions and connect with other fans."
-            action={<Button>Sign In</Button>}
+            title={copy.community.joinConversationTitle}
+            description={copy.community.joinConversationDesc}
+            action={<Button>{copy.auth.signIn}</Button>}
           />
         </Section>
       </PageContainer>

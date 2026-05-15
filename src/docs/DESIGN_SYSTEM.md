@@ -291,6 +291,74 @@ Characteristics:
 
 ---
 
+# UI Copy System
+
+## Philosophy
+
+BigFana copy should feel:
+
+- emotional
+- premium
+- concise
+- cinematic
+- fan-centric
+- human
+
+Avoid:
+
+- enterprise language
+- admin terminology
+- technical system wording
+- robotic labels
+
+---
+
+## Copywriting Rules
+
+Prefer:
+
+- short labels
+- action-oriented language
+- emotional sports terminology
+- touch-native wording
+
+Examples:
+
+Preferred:
+- Inicio
+- Matchday
+- Recompensas
+- Beneficios
+- Comunidad
+- Entradas
+- Tu Club
+
+Avoid:
+- Dashboard
+- Analytics Module
+- Commerce Section
+- User Management
+- System Panel
+
+---
+
+## Localization Architecture
+
+The design system should support:
+
+- centralized copy dictionaries
+- tenant-specific terminology
+- future multi-language support
+
+Recommended structure:
+
+/src/content/copy/es.ts
+/src/content/copy/en.ts
+
+Avoid hardcoded copy directly inside reusable UI components whenever possible.
+
+---
+
 # Spacing System
 
 ## Philosophy

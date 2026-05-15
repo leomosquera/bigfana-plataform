@@ -79,6 +79,35 @@ The product should never feel:
 - childish
 - gaming-noisy
 
+## Internationalization Vision
+
+BigFana is designed as a global multi-tenant platform.
+
+The architecture must support:
+
+- multiple languages
+- regional localization
+- tenant-specific terminology
+- club-specific vocabulary
+- localized sponsor experiences
+- configurable copy systems
+
+Initial product language:
+
+- Spanish (LatAm)
+
+Future planned languages:
+
+- English
+- Portuguese
+
+Important principles:
+
+- User-facing copy should be centralized whenever possible.
+- UI text should avoid hardcoded strings directly inside components.
+- Internal code structure should remain English-based.
+- Clubs may eventually customize terminology and labels.
+
 ## Platform Philosophy
 
 The platform should feel like:

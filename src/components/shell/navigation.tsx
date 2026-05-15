@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, createContext, useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { copy } from "@/lib/i18n";
 import {
   Home,
   Trophy,
@@ -43,23 +44,23 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/", label: "Home", icon: <Home className="h-[18px] w-[18px]" />, section: "main" },
-  { href: "/matches", label: "Matches", icon: <Trophy className="h-[18px] w-[18px]" />, section: "main" },
-  { href: "/events", label: "Events", icon: <Calendar className="h-[18px] w-[18px]" />, section: "main" },
-  { href: "/community", label: "Community", icon: <Users className="h-[18px] w-[18px]" />, section: "social" },
-  { href: "/profile", label: "Profile", icon: <User className="h-[18px] w-[18px]" />, section: "account" },
+  { href: "/", label: copy.nav.home, icon: <Home className="h-[18px] w-[18px]" />, section: "main" },
+  { href: "/matches", label: copy.nav.matches, icon: <Trophy className="h-[18px] w-[18px]" />, section: "main" },
+  { href: "/events", label: copy.nav.events, icon: <Calendar className="h-[18px] w-[18px]" />, section: "main" },
+  { href: "/community", label: copy.nav.community, icon: <Users className="h-[18px] w-[18px]" />, section: "social" },
+  { href: "/profile", label: copy.nav.profile, icon: <User className="h-[18px] w-[18px]" />, section: "account" },
 ];
 
 const mobileMenuItems: NavItem[] = [
-  { href: "/tickets", label: "My Tickets", icon: <Ticket className="h-5 w-5" /> },
-  { href: "/wallet", label: "Wallet", icon: <Wallet className="h-5 w-5" /> },
-  { href: "/rewards", label: "Rewards", icon: <Gift className="h-5 w-5" />, badge: "New" },
-  { href: "/favorites", label: "Favorites", icon: <Star className="h-5 w-5" /> },
+  { href: "/tickets", label: copy.nav.myTickets, icon: <Ticket className="h-5 w-5" /> },
+  { href: "/wallet", label: copy.nav.wallet, icon: <Wallet className="h-5 w-5" /> },
+  { href: "/rewards", label: copy.nav.rewards, icon: <Gift className="h-5 w-5" />, badge: copy.common.new },
+  { href: "/favorites", label: copy.nav.favorites, icon: <Star className="h-5 w-5" /> },
 ];
 
 const settingsMenuItems: NavItem[] = [
-  { href: "/settings", label: "Settings", icon: <Settings className="h-5 w-5" /> },
-  { href: "/help", label: "Help & Support", icon: <HelpCircle className="h-5 w-5" /> },
+  { href: "/settings", label: copy.nav.settings, icon: <Settings className="h-5 w-5" /> },
+  { href: "/help", label: copy.nav.helpSupport, icon: <HelpCircle className="h-5 w-5" /> },
 ];
 
 /* ============================================
@@ -429,8 +430,8 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                 <User className="h-6 w-6 text-primary/80" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-heading-sm text-foreground truncate">Guest User</p>
-                <p className="text-body-sm text-foreground-muted">Sign in for full access</p>
+                <p className="text-heading-sm text-foreground truncate">{copy.auth.guestUser}</p>
+                <p className="text-body-sm text-foreground-muted">{copy.auth.signInForAccess}</p>
               </div>
               <ChevronRight className="h-5 w-5 text-foreground-subtle" />
             </div>
@@ -440,7 +441,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
           <nav className="flex-1 overflow-y-auto p-4 hide-scrollbar">
             {/* Quick Access */}
             <div className="mb-6">
-              <p className="text-overline px-3 mb-2">Quick Access</p>
+              <p className="text-overline px-3 mb-2">{copy.nav.quickAccess}</p>
               <ul className="space-y-1">
                 {mobileMenuItems.map((item) => (
                   <li key={item.href}>
@@ -467,7 +468,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
 
             {/* Settings */}
             <div className="mb-6">
-              <p className="text-overline px-3 mb-2">Settings</p>
+              <p className="text-overline px-3 mb-2">{copy.profile.settingsSection}</p>
               <ul className="space-y-1">
                 {settingsMenuItems.map((item) => (
                   <li key={item.href}>
@@ -486,7 +487,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
 
             {/* Theme Switcher */}
             <div className="mb-6">
-              <p className="text-overline px-3 mb-2">Appearance</p>
+              <p className="text-overline px-3 mb-2">{copy.theme.appearance}</p>
               <div className="flex gap-2 px-3">
                 <button
                   onClick={() => setTheme("dark")}
@@ -498,7 +499,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                   )}
                 >
                   <Moon className="h-4 w-4" />
-                  <span className="text-body-sm">Dark</span>
+                  <span className="text-body-sm">{copy.theme.dark}</span>
                 </button>
                 <button
                   onClick={() => setTheme("light")}
@@ -510,7 +511,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                   )}
                 >
                   <Sun className="h-4 w-4" />
-                  <span className="text-body-sm">Light</span>
+                  <span className="text-body-sm">{copy.theme.light}</span>
                 </button>
                 <button
                   onClick={() => setTheme("system")}
@@ -522,7 +523,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                   )}
                 >
                   <Monitor className="h-4 w-4" />
-                  <span className="text-body-sm">Auto</span>
+                  <span className="text-body-sm">{copy.theme.auto}</span>
                 </button>
               </div>
             </div>
@@ -534,7 +535,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
               className="flex items-center gap-4 w-full px-3 py-3 rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200 touch-target"
             >
               <LogOut className="h-5 w-5" />
-              <span className="text-body-md">Sign Out</span>
+              <span className="text-body-md">{copy.auth.signOut}</span>
             </button>
           </div>
         </div>
@@ -686,7 +687,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
                 "flex items-center gap-2 rounded-xl text-foreground-muted hover:text-foreground transition-all duration-200 group relative",
                 isCollapsed ? "justify-center p-3" : "flex-1 px-3 py-2"
               )}
-              title={isCollapsed ? `Switch to ${theme === "dark" ? "light" : "dark"} mode` : undefined}
+              title={isCollapsed ? (theme === "dark" ? copy.theme.lightMode : copy.theme.darkMode) : undefined}
             >
               <span className="absolute inset-0 rounded-xl bg-white/[0.025] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
               {theme === "dark" ? (
@@ -696,7 +697,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               )}
               {!isCollapsed && (
                 <span className="relative text-sm">
-                  {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                  {theme === "dark" ? copy.theme.lightMode : copy.theme.darkMode}
                 </span>
               )}
             </button>
@@ -709,12 +710,12 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               "group relative flex items-center gap-3 rounded-xl text-foreground-muted hover:text-foreground transition-all duration-200",
               isCollapsed ? "justify-center p-3" : "px-3 py-2.5"
             )}
-            title={isCollapsed ? "Settings" : undefined}
+            title={isCollapsed ? copy.nav.settings : undefined}
           >
             <span className="absolute inset-0 rounded-xl bg-white/[0.025] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
             <Settings className="relative h-[18px] w-[18px]" />
             <span className={cn("relative text-sm", isCollapsed && "hidden")}>
-              Settings
+              {copy.nav.settings}
             </span>
           </Link>
 
@@ -733,7 +734,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
             ) : (
               <>
                 <PanelLeftClose className="relative h-[18px] w-[18px]" />
-                <span className="relative text-sm">Collapse</span>
+                <span className="relative text-sm">{copy.nav.collapse}</span>
               </>
             )}
           </button>
@@ -747,8 +748,8 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               <User className="h-4 w-4 text-primary/70" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">Guest</p>
-              <p className="text-[11px] text-foreground-subtle">Sign in</p>
+              <p className="text-sm font-medium text-foreground truncate">{copy.auth.guest}</p>
+              <p className="text-[11px] text-foreground-subtle">{copy.auth.signIn}</p>
             </div>
           </div>
 
@@ -854,7 +855,7 @@ export function DesktopHeader({ isCollapsed, onMenuClick }: DesktopHeaderProps) 
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-subtle transition-colors duration-200 group-focus-within:text-foreground-muted" />
           <input
             type="search"
-            placeholder="Search matches, events, fans..."
+            placeholder={copy.common.searchPlaceholder}
             className="h-10 w-80 rounded-xl border border-border/40 bg-background-subtle/60 pl-10 pr-4 text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none focus:border-border-focus focus:bg-background-elevated transition-all duration-200"
           />
         </div>
@@ -875,7 +876,7 @@ export function DesktopHeader({ isCollapsed, onMenuClick }: DesktopHeaderProps) 
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-primary/5 ring-1 ring-primary/15 transition-all duration-200 group-hover:ring-primary/25">
             <User className="h-4 w-4 text-primary/70" />
           </div>
-          <span className="text-sm font-medium text-foreground">Guest</span>
+          <span className="text-sm font-medium text-foreground">{copy.auth.guest}</span>
         </button>
       </div>
     </header>

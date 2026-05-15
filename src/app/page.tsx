@@ -19,6 +19,7 @@ import {
   Calendar
 } from "lucide-react";
 import { AppShell, PageContainer, Section, HeroSection } from "@/components/shell";
+import { copy } from "@/lib/i18n";
 import {
   Button,
   Card,
@@ -62,31 +63,30 @@ export default function Home() {
               <div className="flex items-center gap-4 mb-8">
                 <div className="live-badge rounded-full bg-primary/10 border border-primary/20 px-4 py-2">
                   <div className="live-dot" />
-                  <span className="text-xs font-semibold text-primary tracking-wide relative z-10">LIVE NOW</span>
+                  <span className="text-xs font-semibold text-primary tracking-wide relative z-10">{copy.common.liveNow}</span>
                 </div>
                 <span className="text-overline">El Clasico 2024 - Camp Nou</span>
               </div>
               
               {/* Hero headline */}
               <h1 className="text-display-xl text-foreground mb-6">
-                The Beautiful Game,{" "}
-                <span className="text-foreground-muted">Reimagined.</span>
+                {copy.home.heroTitle}{" "}
+                <span className="text-foreground-muted">{copy.home.heroTitleAccent}</span>
               </h1>
               
               <p className="text-body-lg text-foreground-muted max-w-xl mb-10">
-                Experience football like never before. Live scores, exclusive content, 
-                and a global community of passionate fans united by the love of the game.
+                {copy.home.heroSubtitle}
               </p>
               
               {/* CTA buttons */}
               <div className="flex flex-wrap gap-4">
                 <Button size="xl" className="group">
-                  Start Watching
+                  {copy.common.startWatching}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
                 <Button variant="ghost" size="xl" className="group">
                   <Play className="h-4 w-4" />
-                  Watch Highlights
+                  {copy.common.watchHighlights}
                 </Button>
               </div>
 
@@ -103,7 +103,7 @@ export default function Home() {
                     ))}
                   </div>
                   <span className="text-body-sm text-foreground-muted">
-                    <span className="text-foreground font-medium">2.4M</span> fans watching now
+                    <span className="text-foreground font-medium">2.4M</span> {copy.home.fansWatchingNow}
                   </span>
                 </div>
               </div>
@@ -116,9 +116,9 @@ export default function Home() {
         {/* Live Stats Row with ambient glow */}
         <div className="grid grid-cols-3 gap-3 lg:gap-4">
           {[
-            { icon: Trophy, value: "24", label: "Live Matches", accent: true, pulse: true },
-            { icon: Users, value: "1.2M", label: "Active Fans", accent: false, pulse: false },
-            { icon: Zap, value: "156", label: "Events Today", accent: false, pulse: false },
+            { icon: Trophy, value: "24", label: copy.home.liveMatches, accent: true, pulse: true },
+            { icon: Users, value: "1.2M", label: copy.home.activeFans, accent: false, pulse: false },
+            { icon: Zap, value: "156", label: copy.home.eventsToday, accent: false, pulse: false },
           ].map((stat, index) => (
             <div 
               key={stat.label}
@@ -151,9 +151,9 @@ export default function Home() {
         <div className="space-y-4">
           <SegmentedControl
             options={[
-              { value: "all", label: "All" },
-              { value: "live", label: "Live", badge: "12" },
-              { value: "upcoming", label: "Upcoming" },
+              { value: "all", label: copy.filters.all },
+              { value: "live", label: copy.filters.live, badge: "12" },
+              { value: "upcoming", label: copy.filters.upcoming },
             ]}
             value={activeTab}
             onChange={setActiveTab}
@@ -161,10 +161,10 @@ export default function Home() {
           
           <FilterChips
             options={[
-              { value: "live", label: "Live", count: 12 },
-              { value: "football", label: "Football", count: 45 },
-              { value: "basketball", label: "Basketball", count: 23 },
-              { value: "trending", label: "Trending", count: 8 },
+              { value: "live", label: copy.filters.live, count: 12 },
+              { value: "football", label: copy.filters.football, count: 45 },
+              { value: "basketball", label: copy.filters.basketball, count: 23 },
+              { value: "trending", label: copy.filters.trending, count: 8 },
             ]}
             value={activeFilters}
             onChange={(v) => setActiveFilters(v as string[])}
@@ -187,14 +187,14 @@ export default function Home() {
                   <div className="flex items-center gap-3">
                     <div className="live-badge rounded-full bg-primary/15 border border-primary/20 px-3 py-1.5">
                       <div className="live-dot" />
-                      <span className="text-xs font-semibold text-primary relative z-10">LIVE</span>
+                      <span className="text-xs font-semibold text-primary relative z-10">{copy.common.live}</span>
                     </div>
                     <span className="text-overline">La Liga - Matchday 15</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-foreground-subtle">
                       <Users className="h-3.5 w-3.5" />
-                      <span className="text-xs animate-pulse-soft">2.4M watching</span>
+                      <span className="text-xs animate-pulse-soft">2.4M {copy.home.fansWatchingNow}</span>
                     </div>
                     <div className="hidden lg:flex items-center gap-2">
                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -251,7 +251,7 @@ export default function Home() {
                 </div>
 
                 {/* Match footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                  <div className="flex items-center justify-between pt-4 border-t border-border/30">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-foreground-subtle">
                       <MapPin className="h-3.5 w-3.5" />
@@ -259,13 +259,13 @@ export default function Home() {
                     </div>
                     <div className="hidden lg:flex items-center gap-2 text-foreground-subtle">
                       <MessageCircle className="h-3.5 w-3.5" />
-                      <span className="text-body-sm">12.4k comments</span>
+                      <span className="text-body-sm">12.4k comentarios</span>
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <Button variant="secondary" size="sm">Match Stats</Button>
+                    <Button variant="secondary" size="sm">{copy.common.matchStats}</Button>
                     <Button size="sm" className="group">
-                      Watch Live
+                      {copy.common.watchLive}
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </Button>
                   </div>
@@ -278,10 +278,10 @@ export default function Home() {
         {/* Fan Reactions - Social proof section */}
         <Section>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-heading-md text-foreground">Fan Pulse</h3>
+            <h3 className="text-heading-md text-foreground">{copy.home.fanPulse}</h3>
             <div className="flex items-center gap-2 text-foreground-subtle">
               <Flame className="h-4 w-4 text-primary" />
-              <span className="text-body-sm">Trending now</span>
+              <span className="text-body-sm">{copy.common.trendingNow}</span>
             </div>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-2 hide-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0">
@@ -310,10 +310,10 @@ export default function Home() {
 
         {/* More Live Matches - Horizontal scroll on mobile */}
         <Section 
-          title="More Live"
+          title={copy.home.moreLive}
           action={
             <Button variant="ghost" size="sm" className="group">
-              See All
+              {copy.common.seeAll}
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           }
@@ -333,7 +333,7 @@ export default function Home() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="live-dot" style={{ transform: 'scale(0.75)' }} />
-                      <span className="text-caption text-primary font-medium">LIVE</span>
+                      <span className="text-caption text-primary font-medium">{copy.common.live}</span>
                     </div>
                     <span className="text-caption">{match.league}</span>
                   </div>
@@ -362,7 +362,7 @@ export default function Home() {
                       <Users className="h-3 w-3" />
                       <span className="text-caption">{match.viewers}</span>
                     </div>
-                    <Button variant="ghost" size="sm">Watch</Button>
+                    <Button variant="ghost" size="sm">{copy.common.watch}</Button>
                   </div>
                 </div>
               </Card>
@@ -372,11 +372,11 @@ export default function Home() {
 
         {/* Upcoming Matches */}
         <Section 
-          title="Coming Up" 
-          subtitle="Don&apos;t miss these matches"
+          title={copy.home.comingUp}
+          subtitle={copy.home.comingUpSubtitle}
           action={
             <Button variant="ghost" size="sm" className="group">
-              View Schedule
+              {copy.common.viewSchedule}
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           }
@@ -443,13 +443,13 @@ export default function Home() {
         </Section>
 
         {/* Quick Actions */}
-        <Section title="Explore">
+        <Section title={copy.home.explore}>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
             {[
-              { icon: Trophy, label: "Leagues", desc: "Follow competitions", color: "text-amber-500" },
-              { icon: Users, label: "Community", desc: "Join discussions", color: "text-blue-500" },
-              { icon: Zap, label: "Live Events", desc: "Real-time action", color: "text-primary" },
-              { icon: TrendingUp, label: "Trending", desc: "What&apos;s hot", color: "text-emerald-500" },
+              { icon: Trophy, label: copy.home.leagues, desc: copy.home.leaguesDesc, color: "text-amber-500" },
+              { icon: Users, label: copy.home.communityLabel, desc: copy.home.communityDesc, color: "text-blue-500" },
+              { icon: Zap, label: copy.home.liveEvents, desc: copy.home.liveEventsDesc, color: "text-primary" },
+              { icon: TrendingUp, label: copy.common.trending, desc: copy.home.whatIsHot, color: "text-emerald-500" },
             ].map((item) => (
               <Card 
                 key={item.label} 

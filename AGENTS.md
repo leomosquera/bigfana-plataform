@@ -172,3 +172,27 @@ Every screen should feel:
 - ready for demo
 
 If something feels like a generic dashboard, simplify it and make it more cinematic, human, and mobile-first.
+
+## Critical Workflow Rule
+
+The current UI Kit, motion language, spacing system, layout system, and navigation foundations are considered approved.
+
+Do not redesign or replace existing foundations unless explicitly requested.
+
+When building new screens:
+
+- compose using existing patterns
+- reuse existing components
+- preserve visual consistency
+- preserve spacing rhythm
+- preserve motion language
+- preserve mobile-first behavior
+
+If a change may significantly alter:
+- architecture
+- navigation
+- motion
+- visual language
+- component philosophy
+
+ask for confirmation first.

@@ -538,6 +538,60 @@ Prefer:
 
 ---
 
+# Language & Localization Rules
+
+Current primary UI language:
+
+- Spanish (LatAm)
+
+Future support:
+
+- English
+- Portuguese
+
+Rules:
+
+- Visible UI should default to Spanish.
+- Avoid mixing English and Spanish in production interfaces.
+- Navigation labels, buttons, tabs, cards and empty states should use localized copy.
+- Avoid hardcoded UI text directly inside JSX components.
+- Copy should be reusable and centralized whenever possible.
+
+Internal development language remains English:
+
+- folders
+- components
+- hooks
+- services
+- variables
+- TypeScript types
+
+Examples:
+
+GOOD:
+- /components/navigation/bottom-nav.tsx
+- fan-profile-card.tsx
+
+BAD:
+- /componentes/menu/menu-inferior.tsx
+
+The UX language should feel:
+
+- emotional
+- premium
+- human
+- sports-oriented
+- concise
+- touch-native
+
+Avoid:
+
+- enterprise terminology
+- robotic labels
+- generic SaaS wording
+
+---
+
 # Final UX Standard
 
 Every interaction should feel:
