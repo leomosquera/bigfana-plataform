@@ -715,7 +715,7 @@ function Scoreboard({
         
         <div className="flex items-center justify-between">
           <div className="flex flex-col items-center gap-3">
-            <Avatar fallback={homeTeam.substring(0, 3)} alt={homeTeam.name} size="xl" />
+            <Avatar fallback={homeTeam.substring(0, 3)} alt={homeTeam} size="xl" />
             <span className="text-heading-sm text-foreground">{homeTeam}</span>
           </div>
           
@@ -727,7 +727,7 @@ function Scoreboard({
           </div>
           
           <div className="flex flex-col items-center gap-3">
-            <Avatar fallback={awayTeam.substring(0, 3)} alt={awayTeam.name} size="xl" />
+            <Avatar fallback={awayTeam.substring(0, 3)} alt={awayTeam} size="xl" />
             <span className="text-heading-sm text-foreground">{awayTeam}</span>
           </div>
         </div>
@@ -768,7 +768,7 @@ function StandingsRow({
         {position}
       </span>
       <div className="flex items-center gap-3 flex-1">
-        <Avatar fallback={team.substring(0, 2)} size="sm" />
+        <Avatar fallback={team.substring(0, 2)} alt={team} size="sm" />
         <span className={cn(
           "text-body-sm font-medium",
           isHighlighted ? "text-primary" : "text-foreground"
@@ -803,7 +803,7 @@ function PlayerCard({
         <div className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-xl bg-background/80 backdrop-blur">
           <span className="text-heading-md text-foreground font-bold">{number}</span>
         </div>
-        <Avatar fallback={name.substring(0, 2)} size="xl" />
+        <Avatar fallback={name.substring(0, 2)} alt={name} size="xl" />
       </div>
       <div className="p-4 text-center">
         <h4 className="text-heading-md text-foreground">{name}</h4>
@@ -994,7 +994,7 @@ function StoryItem({
         isLive && "bg-primary animate-pulse-soft"
       )}>
         <div className="p-0.5 rounded-full bg-background">
-          <Avatar fallback={name.substring(0, 2)} size="lg" status={isLive ? "live" : undefined} />
+          <Avatar fallback={name.substring(0, 2)} alt={name} size="lg" status={isLive ? "live" : undefined} />
         </div>
       </div>
       <span className="text-caption text-center truncate w-full">{name}</span>
@@ -1022,7 +1022,7 @@ function DiscussionCard({
   return (
     <Card variant="default" padding="md">
       <div className="flex items-start gap-3">
-        <Avatar fallback={author.substring(0, 2)} size="md" />
+        <Avatar fallback={author.substring(0, 2)} alt={author} size="md" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-body-sm font-medium text-foreground">{author}</span>
