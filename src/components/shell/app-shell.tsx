@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import {
   MobileHeader,
   BottomNav,
   Sidebar,
   DesktopHeader,
+  useSidebarState,
 } from "./navigation";
 
 interface AppShellProps {
@@ -37,15 +38,42 @@ export function AppShell({
   hideBottomNav = false,
   className,
 }: AppShellProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const {
+    isCollapsed,
+    isMobileOpen,
+    isHydrated,
+    toggle,
+    openMobile,
+    closeMobile,
+  } = useSidebarState();
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Desktop Sidebar */}
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {/* Desktop Sidebar - always visible on lg+ */}
+      <div className="hidden lg:block">
+        <Sidebar 
+          isCollapsed={isCollapsed} 
+          isMobileOpen={false}
+          onToggle={toggle}
+          onCloseMobile={closeMobile}
+        />
+      </div>
+
+      {/* Mobile Sidebar - overlay drawer */}
+      <div className="lg:hidden">
+        <Sidebar 
+          isCollapsed={false} 
+          isMobileOpen={isMobileOpen}
+          onToggle={toggle}
+          onCloseMobile={closeMobile}
+        />
+      </div>
 
       {/* Desktop Header */}
-      <DesktopHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <DesktopHeader 
+        isCollapsed={isCollapsed} 
+        onMenuClick={toggle} 
+      />
 
       {/* Mobile Header */}
       <div className="lg:hidden">
@@ -58,11 +86,13 @@ export function AppShell({
         />
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - adjusts based on sidebar state */}
       <main
         className={cn(
-          "flex-1 lg:pl-0",
-          sidebarOpen && "lg:pl-64",
+          "transition-all duration-300 ease-out",
+          // Desktop: offset by sidebar width
+          isHydrated && !isCollapsed ? "lg:pl-64" : "lg:pl-[72px]",
+          // Mobile: bottom padding for nav
           !hideBottomNav && "pb-20 lg:pb-0",
           className
         )}
@@ -98,8 +128,8 @@ export function PageContainer({
 }: PageContainerProps) {
   const sizeClasses = {
     sm: "max-w-2xl",
-    md: "max-w-3xl",
-    lg: "max-w-5xl",
+    md: "max-w-4xl",
+    lg: "max-w-6xl",
     xl: "max-w-7xl",
     full: "max-w-full",
   };
@@ -109,7 +139,7 @@ export function PageContainer({
       className={cn(
         "mx-auto w-full",
         sizeClasses[size],
-        padded && "px-4 py-6 lg:px-6 lg:py-8",
+        padded && "px-4 py-8 lg:px-8 lg:py-12",
         className
       )}
     >
@@ -138,15 +168,15 @@ export function Section({
   className,
 }: SectionProps) {
   return (
-    <section className={cn("space-y-4", className)}>
+    <section className={cn("space-y-6", className)}>
       {(title || subtitle || action) && (
         <div className="flex items-end justify-between gap-4">
-          <div>
+          <div className="space-y-1">
             {title && (
               <h2 className="text-heading-lg text-foreground">{title}</h2>
             )}
             {subtitle && (
-              <p className="text-body-sm text-foreground-muted mt-1">{subtitle}</p>
+              <p className="text-body-sm text-foreground-muted">{subtitle}</p>
             )}
           </div>
           {action && <div className="shrink-0">{action}</div>}
@@ -177,9 +207,9 @@ export function HeroSection({
   className,
 }: HeroSectionProps) {
   const heightClasses = {
-    sm: "min-h-[200px]",
-    md: "min-h-[300px]",
-    lg: "min-h-[400px]",
+    sm: "min-h-[240px]",
+    md: "min-h-[360px]",
+    lg: "min-h-[480px]",
     full: "min-h-[100vh]",
   };
 
@@ -194,21 +224,40 @@ export function HeroSection({
       {/* Background Image */}
       {backgroundImage && (
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-700"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         />
       )}
 
-      {/* Gradient Overlay */}
+      {/* Premium multi-layer gradient overlay */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, var(--background) 0%, rgba(9, 9, 11, ${overlayIntensity / 100}) 50%, rgba(9, 9, 11, 0.3) 100%)`,
+          background: `
+            linear-gradient(to top, var(--background) 0%, transparent 40%),
+            linear-gradient(to top, rgba(5, 5, 6, ${overlayIntensity / 100}) 0%, rgba(5, 5, 6, 0.4) 60%, rgba(5, 5, 6, 0.2) 100%)
+          `,
         }}
       />
 
-      {/* Cinematic glow effect */}
-      <div className="absolute inset-0 gradient-cinematic pointer-events-none" />
+      {/* Cinematic red atmospheric glow */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 80% at 50% 20%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse 80% 60% at 20% 80%, rgba(239, 68, 68, 0.04) 0%, transparent 40%)
+          `,
+        }}
+      />
+
+      {/* Subtle vignette */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, transparent 40%, rgba(5, 5, 6, 0.4) 100%)",
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10 w-full">{children}</div>

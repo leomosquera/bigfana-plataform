@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /* ============================================
-   BigFana Design System - Design Tokens
-   Premium Sports-Tech Aesthetic
-   Dark Theme First
+   BigFana Design System - Premium Visual Layer
+   Cinematic Sports-Tech Aesthetic
+   Inspired by: Airbnb, Apple TV, DAZN, Linear
    ============================================ */
 
 :root {
@@ -31,46 +31,54 @@
   --radius-3xl: 1.5rem;    /* 24px */
   --radius-full: 9999px;
 
-  /* ---- Shadow Scale ---- */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /* ---- Premium Shadow Scale ---- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.2);
   
-  /* Premium glow shadows for dark mode */
-  --shadow-glow-sm: 0 0 10px -2px rgb(255 255 255 / 0.05);
-  --shadow-glow-md: 0 0 20px -4px rgb(255 255 255 / 0.08);
-  --shadow-glow-primary: 0 0 20px -4px var(--primary);
+  /* Premium glow shadows */
+  --shadow-glow-soft: 0 0 40px rgba(255, 255, 255, 0.02);
+  --shadow-glow-subtle: 0 0 60px rgba(255, 255, 255, 0.03);
+  --shadow-glow-primary: 0 0 40px rgba(239, 68, 68, 0.15);
+  --shadow-glow-primary-strong: 0 0 60px rgba(239, 68, 68, 0.25);
   
-  /* ---- Base Colors (Dark Theme First) ---- */
-  --background: #09090b;
-  --background-subtle: #0f0f12;
-  --background-elevated: #18181b;
-  --background-overlay: rgba(0, 0, 0, 0.8);
+  /* Card elevation shadows - softer, more cinematic */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+  --shadow-card-elevated: 0 12px 32px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+  /* ---- Layered Background System ---- */
+  --background: #050506;
+  --background-subtle: #0a0a0c;
+  --background-elevated: #111114;
+  --background-surface: #161619;
+  --background-overlay: rgba(0, 0, 0, 0.85);
   
   --foreground: #fafafa;
-  --foreground-muted: #a1a1aa;
-  --foreground-subtle: #71717a;
+  --foreground-muted: #9ca3af;
+  --foreground-subtle: #6b7280;
   
   /* ---- Primary (Tenant Customizable - Default: Red) ---- */
   --primary: #ef4444;
   --primary-hover: #dc2626;
   --primary-foreground: #ffffff;
-  --primary-subtle: rgba(239, 68, 68, 0.1);
-  --primary-glow: rgba(239, 68, 68, 0.3);
+  --primary-subtle: rgba(239, 68, 68, 0.08);
+  --primary-glow: rgba(239, 68, 68, 0.2);
   
   /* ---- Semantic Colors ---- */
-  --card: #18181b;
-  --card-hover: #1f1f23;
+  --card: #0e0e11;
+  --card-hover: #141417;
   --card-foreground: #fafafa;
   
-  --border: #27272a;
-  --border-subtle: #1f1f23;
-  --border-focus: #3f3f46;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-focus: rgba(255, 255, 255, 0.12);
   
-  --input: #18181b;
-  --input-focus: #27272a;
+  --input: #0e0e11;
+  --input-focus: #141417;
   
   --ring: var(--primary);
   --ring-offset: var(--background);
@@ -93,13 +101,13 @@
   --info-subtle: rgba(59, 130, 246, 0.1);
   
   /* ---- Component Specific ---- */
-  --popover: #18181b;
+  --popover: #111114;
   --popover-foreground: #fafafa;
   
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
+  --muted: #1a1a1e;
+  --muted-foreground: #9ca3af;
   
-  --accent: #27272a;
+  --accent: #1a1a1e;
   --accent-foreground: #fafafa;
   
   /* ---- Navigation ---- */
@@ -115,28 +123,12 @@
   --safe-area-left: env(safe-area-inset-left, 0px);
   --safe-area-right: env(safe-area-inset-right, 0px);
   
-  /* ---- Transitions ---- */
+  /* ---- Premium Transitions ---- */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
   --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Light theme override (if needed in future) */
-@media (prefers-color-scheme: light) {
-  :root.light-mode {
-    --background: #ffffff;
-    --background-subtle: #fafafa;
-    --background-elevated: #f4f4f5;
-    --foreground: #09090b;
-    --foreground-muted: #52525b;
-    --foreground-subtle: #71717a;
-    --card: #ffffff;
-    --card-hover: #f4f4f5;
-    --card-foreground: #09090b;
-    --border: #e4e4e7;
-    --border-subtle: #f4f4f5;
-  }
 }
 
 /* ============================================
@@ -148,6 +140,7 @@
   --color-background: var(--background);
   --color-background-subtle: var(--background-subtle);
   --color-background-elevated: var(--background-elevated);
+  --color-background-surface: var(--background-surface);
   --color-foreground: var(--foreground);
   --color-foreground-muted: var(--foreground-muted);
   --color-foreground-subtle: var(--foreground-subtle);
@@ -218,29 +211,29 @@ body {
    Typography Classes
    ============================================ */
 
-/* Display - Large emotional headings (Airbnb style) */
+/* Display - Large emotional headings (Airbnb/Apple TV style) */
 .text-display-xl {
   font-family: var(--font-sora), system-ui, sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.text-display-lg {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.025em;
 }
 
-.text-display-lg {
-  font-family: var(--font-sora), system-ui, sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
 .text-display-md {
   font-family: var(--font-sora), system-ui, sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
   font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 /* Headings */
@@ -248,33 +241,35 @@ body {
   font-family: var(--font-sora), system-ui, sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 .text-heading-md {
   font-family: var(--font-sora), system-ui, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .text-heading-sm {
   font-family: var(--font-sora), system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 /* Body text */
 .text-body-lg {
   font-size: 1.125rem;
-  line-height: 1.6;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
 }
 
 .text-body-md {
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .text-body-sm {
@@ -299,28 +294,55 @@ body {
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--foreground-muted);
 }
 
 /* ============================================
-   Utility Classes
+   Premium Glass & Surface Effects
    ============================================ */
 
-/* Glass morphism effect */
+/* Premium glassmorphism */
 .glass {
-  background: rgba(24, 24, 27, 0.8);
+  background: rgba(14, 14, 17, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-.glass-light {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.glass-strong {
+  background: rgba(14, 14, 17, 0.85);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
 }
 
-/* Premium gradient overlays */
+/* Layered surface system */
+.surface-base {
+  background: var(--background);
+}
+
+.surface-raised {
+  background: var(--background-subtle);
+}
+
+.surface-elevated {
+  background: var(--background-elevated);
+}
+
+.surface-overlay {
+  background: var(--background-surface);
+}
+
+/* ============================================
+   Premium Gradient & Glow Effects
+   ============================================ */
+
+/* Cinematic gradient overlays */
 .gradient-fade-bottom {
   background: linear-gradient(to top, var(--background) 0%, transparent 100%);
 }
@@ -330,19 +352,61 @@ body {
 }
 
 .gradient-cinematic {
-  background: radial-gradient(ellipse at center top, rgba(239, 68, 68, 0.08) 0%, transparent 50%);
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 0%,
+    rgba(239, 68, 68, 0.06) 0%,
+    transparent 60%
+  );
 }
 
-/* Glow effects */
+.gradient-cinematic-strong {
+  background: radial-gradient(
+    ellipse 100% 60% at 50% -10%,
+    rgba(239, 68, 68, 0.12) 0%,
+    transparent 50%
+  );
+}
+
+/* Ambient atmospheric glow */
+.glow-ambient {
+  position: relative;
+}
+
+.glow-ambient::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse at center top,
+    rgba(239, 68, 68, 0.08) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Card glow effects */
 .glow-primary {
-  box-shadow: 0 0 30px -5px var(--primary-glow);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.glow-primary-hover:hover {
+  box-shadow: var(--shadow-glow-primary-strong);
 }
 
 .glow-subtle {
-  box-shadow: 0 0 20px -4px rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-glow-soft);
 }
 
-/* Focus states */
+/* ============================================
+   Focus & Interactive States
+   ============================================ */
+
 .focus-ring {
   outline: none;
 }
@@ -352,7 +416,20 @@ body {
   outline-offset: 2px;
 }
 
-/* Safe area utilities */
+/* Premium hover lift */
+.hover-lift {
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ============================================
+   Safe Area Utilities
+   ============================================ */
+
 .safe-top {
   padding-top: var(--safe-area-top);
 }
@@ -369,7 +446,10 @@ body {
   padding-right: var(--safe-area-right);
 }
 
-/* Hide scrollbar but keep functionality */
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -379,7 +459,6 @@ body {
   display: none;
 }
 
-/* Touch action for mobile */
 .touch-pan-x {
   touch-action: pan-x;
 }
@@ -388,8 +467,28 @@ body {
   touch-action: pan-y;
 }
 
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: var(--radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-focus);
+  }
+}
+
 /* ============================================
-   Animation Classes
+   Premium Animation Classes
    ============================================ */
 
 @keyframes fade-in {
@@ -400,7 +499,7 @@ body {
 @keyframes fade-up {
   from { 
     opacity: 0; 
-    transform: translateY(10px); 
+    transform: translateY(16px); 
   }
   to { 
     opacity: 1; 
@@ -411,7 +510,7 @@ body {
 @keyframes scale-in {
   from { 
     opacity: 0; 
-    transform: scale(0.95); 
+    transform: scale(0.96); 
   }
   to { 
     opacity: 1; 
@@ -429,9 +528,23 @@ body {
   to { transform: translateY(0); }
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 @keyframes pulse-soft {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(239, 68, 68, 0.35);
+  }
 }
 
 .animate-fade-in {
@@ -439,41 +552,39 @@ body {
 }
 
 .animate-fade-up {
-  animation: fade-up var(--transition-slow) ease-out;
+  animation: fade-up var(--transition-smooth) ease-out;
 }
 
 .animate-scale-in {
-  animation: scale-in var(--transition-base) ease-out;
+  animation: scale-in var(--transition-smooth) ease-out;
 }
 
 .animate-slide-up {
-  animation: slide-up var(--transition-slow) ease-out;
+  animation: slide-up var(--transition-smooth) ease-out;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 0%,
+    var(--background-surface) 50%,
+    var(--muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 .animate-pulse-soft {
   animation: pulse-soft 2s ease-in-out infinite;
 }
 
-/* ============================================
-   Scrollbar Styling (for desktop)
-   ============================================ */
-
-@media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--background-subtle);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: var(--radius-full);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--border-focus);
-  }
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
 }
+
+/* Staggered animations */
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }

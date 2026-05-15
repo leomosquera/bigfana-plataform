@@ -4,4 +4,5 @@ export {
   BottomNav,
   Sidebar,
   DesktopHeader,
+  useSidebarState,
 } from "./navigation";
