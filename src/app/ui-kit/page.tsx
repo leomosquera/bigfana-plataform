@@ -620,7 +620,7 @@ function MatchCard({
     return (
       <div className="flex items-center justify-between p-4 rounded-xl bg-card border border-border/40 hover:bg-card-hover transition-colors">
         <div className="flex items-center gap-3 flex-1">
-          <Avatar fallback={homeTeam.name.substring(0, 2)} size="sm" />
+          <Avatar fallback={homeTeam.name.substring(0, 2)} alt={homeTeam.name} size="sm" />
           <span className="text-body-sm text-foreground font-medium truncate">{homeTeam.name}</span>
         </div>
         <div className="flex items-center gap-2 px-4">
@@ -635,7 +635,7 @@ function MatchCard({
         </div>
         <div className="flex items-center gap-3 flex-1 justify-end">
           <span className="text-body-sm text-foreground font-medium truncate">{awayTeam.name}</span>
-          <Avatar fallback={awayTeam.name.substring(0, 2)} size="sm" />
+          <Avatar fallback={awayTeam.name.substring(0, 2)} alt={awayTeam.name} size="sm" />
         </div>
       </div>
     );
@@ -658,7 +658,7 @@ function MatchCard({
         
         <div className="flex items-center justify-between">
           <div className="flex flex-col items-center gap-2 flex-1">
-            <Avatar fallback={homeTeam.name.substring(0, 3)} size="lg" />
+            <Avatar fallback={homeTeam.name.substring(0, 3)} alt={homeTeam.name} size="lg" />
             <span className="text-body-sm text-foreground font-medium text-center">{homeTeam.name}</span>
           </div>
           
@@ -678,7 +678,7 @@ function MatchCard({
           </div>
           
           <div className="flex flex-col items-center gap-2 flex-1">
-            <Avatar fallback={awayTeam.name.substring(0, 3)} size="lg" />
+            <Avatar fallback={awayTeam.name.substring(0, 3)} alt={awayTeam.name} size="lg" />
             <span className="text-body-sm text-foreground font-medium text-center">{awayTeam.name}</span>
           </div>
         </div>
@@ -715,7 +715,7 @@ function Scoreboard({
         
         <div className="flex items-center justify-between">
           <div className="flex flex-col items-center gap-3">
-            <Avatar fallback={homeTeam.substring(0, 3)} size="xl" />
+            <Avatar fallback={homeTeam.substring(0, 3)} alt={homeTeam.name} size="xl" />
             <span className="text-heading-sm text-foreground">{homeTeam}</span>
           </div>
           
@@ -727,7 +727,7 @@ function Scoreboard({
           </div>
           
           <div className="flex flex-col items-center gap-3">
-            <Avatar fallback={awayTeam.substring(0, 3)} size="xl" />
+            <Avatar fallback={awayTeam.substring(0, 3)} alt={awayTeam.name} size="xl" />
             <span className="text-heading-sm text-foreground">{awayTeam}</span>
           </div>
         </div>
