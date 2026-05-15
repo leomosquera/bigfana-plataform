@@ -520,6 +520,42 @@ body {
   50% { transform: translateY(-8px); }
 }
 
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes ambient-shift {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.8;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+@keyframes spotlight-sweep {
+  0% { transform: translateX(-100%) rotate(15deg); }
+  100% { transform: translateX(200%) rotate(15deg); }
+}
+
+@keyframes crowd-pulse {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.06; }
+}
+
+@keyframes score-flash {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 30px rgba(220, 38, 38, 0.5); }
+}
+
+@keyframes live-ring {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
 .animate-fade-in {
   animation: fade-in var(--transition-base) ease-out;
 }
@@ -559,7 +595,222 @@ body {
   animation: float 5s ease-in-out infinite;
 }
 
-/* Staggered animations */
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-ambient {
+  animation: ambient-shift 15s ease-in-out infinite;
+}
+
+.animate-spotlight {
+  animation: spotlight-sweep 8s linear infinite;
+}
+
+.animate-crowd {
+  animation: crowd-pulse 3s ease-in-out infinite;
+}
+
+.animate-score-flash {
+  animation: score-flash 2s ease-in-out infinite;
+}
+
+.animate-live-ring {
+  animation: live-ring 1.5s ease-out infinite;
+}
+
+/* ============================================
+   Stadium Atmosphere Effects
+   ============================================ */
+
+.stadium-atmosphere {
+  position: relative;
+  overflow: hidden;
+}
+
+.stadium-atmosphere::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(220, 38, 38, 0.05) 0%, transparent 40%),
+    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(0, 0, 0, 0.5) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stadium-lights {
+  position: absolute;
+  inset: 0;
+  background: 
+    conic-gradient(from 180deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.02) 60deg, transparent 120deg),
+    conic-gradient(from 0deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.015) 60deg, transparent 120deg);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.crowd-silhouette {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(to top, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    rgba(0, 0, 0, 0.4) 40%, 
+    transparent 100%
+  );
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 20 Q5 12 10 15 T20 13 T30 16 T40 12 T50 14 T60 11 T70 15 T80 13 T90 16 T100 12 V20 Z' fill='black'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  pointer-events: none;
+}
+
+.spotlight-beam {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 200px;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
+  transform: translateX(-50%) rotate(15deg);
+  pointer-events: none;
+}
+
+/* ============================================
+   Live Indicator Enhancements
+   ============================================ */
+
+.live-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.live-badge::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: rgba(220, 38, 38, 0.15);
+  border-radius: 9999px;
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.live-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+}
+
+.live-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  animation: live-ring 1.5s ease-out infinite;
+}
+
+/* ============================================
+   Media Layer Effects
+   ============================================ */
+
+.media-overlay {
+  position: relative;
+}
+
+.media-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 2, 3, 0.3) 0%,
+    rgba(2, 2, 3, 0.6) 50%,
+    rgba(2, 2, 3, 0.95) 100%
+  );
+  pointer-events: none;
+}
+
+.vignette {
+  position: relative;
+}
+
+.vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+.noise-texture {
+  position: relative;
+}
+
+.noise-texture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================
+   Premium Card Enhancements for Live Feel
+   ============================================ */
+
+.card-live {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-live::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  animation: ambient-shift 3s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
+.card-glow-ambient {
+  position: relative;
+}
+
+.card-glow-ambient::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), transparent 50%, rgba(220, 38, 38, 0.05));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-glow-ambient:hover::after {
+  opacity: 1;
+}
+
+/* ============================================
+   Staggered animations
+   ============================================ */
+
 .stagger-1 { animation-delay: 50ms; }
 .stagger-2 { animation-delay: 100ms; }
 .stagger-3 { animation-delay: 150ms; }
