@@ -3,45 +3,55 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
-  "rounded-2xl transition-all duration-300 ease-out",
+  "relative rounded-2xl transition-all duration-300 ease-out overflow-hidden",
   {
     variants: {
       variant: {
         default: [
-          "bg-card/80 border border-border",
-          "shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
+          "bg-card border border-border/50",
+          "shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset,0_2px_8px_rgba(0,0,0,0.15)]",
         ],
         elevated: [
-          "bg-card border border-border",
-          "shadow-[0_8px_24px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.06)]",
+          "bg-card border border-border/50",
+          "shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset,0_12px_40px_rgba(0,0,0,0.25),0_4px_12px_rgba(0,0,0,0.15)]",
         ],
         ghost: "bg-transparent",
         glass: [
-          "bg-card/60 border border-border/50",
-          "backdrop-blur-xl",
-          "shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
+          "bg-card/50 border border-border/40",
+          "backdrop-blur-2xl",
+          "shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset,0_8px_32px_rgba(0,0,0,0.2)]",
         ],
         interactive: [
-          "bg-card/80 border border-border",
-          "shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
-          "hover:bg-card hover:border-border-focus",
-          "hover:shadow-[0_12px_32px_rgba(0,0,0,0.16),0_4px_12px_rgba(0,0,0,0.08)]",
-          "hover:-translate-y-0.5",
-          "cursor-pointer active:scale-[0.99] active:translate-y-0",
+          "bg-card border border-border/50",
+          "shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset,0_2px_8px_rgba(0,0,0,0.15)]",
+          "hover:bg-card-hover hover:border-border-focus/50",
+          "hover:shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset,0_16px_48px_rgba(0,0,0,0.3),0_8px_20px_rgba(0,0,0,0.2)]",
+          "hover:-translate-y-1",
+          "cursor-pointer active:scale-[0.995] active:translate-y-0",
         ],
         highlight: [
-          "bg-card/80 border border-primary/15",
-          "shadow-[0_4px_16px_rgba(239,68,68,0.08)]",
+          "bg-card border border-primary/15",
+          "shadow-[0_0_0_1px_rgba(220,38,38,0.05)_inset,0_8px_32px_rgba(220,38,38,0.08),0_4px_12px_rgba(0,0,0,0.15)]",
           "hover:border-primary/25",
-          "hover:shadow-[0_8px_32px_rgba(239,68,68,0.12)]",
+          "hover:shadow-[0_0_0_1px_rgba(220,38,38,0.1)_inset,0_16px_48px_rgba(220,38,38,0.12),0_8px_20px_rgba(0,0,0,0.2)]",
+          "hover:-translate-y-0.5",
         ],
         premium: [
-          "bg-gradient-to-br from-card to-card/60",
-          "border border-border/50",
+          "bg-gradient-to-br from-card via-card to-card/80",
+          "border border-border/40",
           "backdrop-blur-xl",
-          "shadow-[0_8px_32px_rgba(0,0,0,0.15),0_0_0_1px_rgba(255,255,255,0.02)_inset]",
-          "hover:shadow-[0_16px_48px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.04)_inset]",
-          "hover:-translate-y-0.5",
+          "shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset,0_1px_0_0_rgba(255,255,255,0.03)_inset,0_12px_40px_rgba(0,0,0,0.25),0_4px_12px_rgba(0,0,0,0.15)]",
+          "hover:border-border-focus/50",
+          "hover:shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset,0_1px_0_0_rgba(255,255,255,0.05)_inset,0_20px_60px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.2)]",
+          "hover:-translate-y-1",
+        ],
+        featured: [
+          "bg-gradient-to-br from-card via-card to-primary/5",
+          "border border-primary/20",
+          "shadow-[0_0_0_1px_rgba(220,38,38,0.08)_inset,0_0_80px_rgba(220,38,38,0.05),0_12px_40px_rgba(0,0,0,0.25)]",
+          "hover:border-primary/30",
+          "hover:shadow-[0_0_0_1px_rgba(220,38,38,0.12)_inset,0_0_100px_rgba(220,38,38,0.08),0_20px_60px_rgba(0,0,0,0.35)]",
+          "hover:-translate-y-1",
         ],
       },
       padding: {

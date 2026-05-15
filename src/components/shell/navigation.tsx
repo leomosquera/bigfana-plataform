@@ -15,6 +15,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   X,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,25 +23,24 @@ interface NavItem {
   href: string;
   label: string;
   icon: React.ReactNode;
+  section?: string;
 }
 
 const navItems: NavItem[] = [
-  { href: "/", label: "Home", icon: <Home className="h-[18px] w-[18px]" /> },
-  { href: "/matches", label: "Matches", icon: <Trophy className="h-[18px] w-[18px]" /> },
-  { href: "/events", label: "Events", icon: <Calendar className="h-[18px] w-[18px]" /> },
-  { href: "/community", label: "Community", icon: <Users className="h-[18px] w-[18px]" /> },
-  { href: "/profile", label: "Profile", icon: <User className="h-[18px] w-[18px]" /> },
+  { href: "/", label: "Home", icon: <Home className="h-[18px] w-[18px]" />, section: "main" },
+  { href: "/matches", label: "Matches", icon: <Trophy className="h-[18px] w-[18px]" />, section: "main" },
+  { href: "/events", label: "Events", icon: <Calendar className="h-[18px] w-[18px]" />, section: "main" },
+  { href: "/community", label: "Community", icon: <Users className="h-[18px] w-[18px]" />, section: "social" },
+  { href: "/profile", label: "Profile", icon: <User className="h-[18px] w-[18px]" />, section: "account" },
 ];
 
 const SIDEBAR_STORAGE_KEY = "bigfana-sidebar-collapsed";
 
-// Custom hook for sidebar state with localStorage persistence
 export function useSidebarState() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Hydrate from localStorage
   useEffect(() => {
     const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);
     if (stored !== null) {
@@ -49,7 +49,6 @@ export function useSidebarState() {
     setIsHydrated(true);
   }, []);
 
-  // Persist to localStorage
   useEffect(() => {
     if (isHydrated) {
       localStorage.setItem(SIDEBAR_STORAGE_KEY, String(isCollapsed));
@@ -100,14 +99,14 @@ export function MobileHeader({
         "sticky top-0 z-40 flex h-14 items-center justify-between px-4 safe-top",
         transparent
           ? "bg-transparent"
-          : "glass-strong border-b border-border"
+          : "glass-strong border-b border-border/50"
       )}
     >
       <div className="flex items-center gap-3">
         {showBack && (
           <button
             onClick={onBack}
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
             aria-label="Go back"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -115,7 +114,7 @@ export function MobileHeader({
         )}
         {!showBack && (
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/90 shadow-lg shadow-primary/20">
               <span className="text-sm font-bold text-primary-foreground">BF</span>
             </div>
             {!title && (
@@ -136,17 +135,17 @@ export function MobileHeader({
         {actions || (
           <>
             <button
-              className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+              className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
               aria-label="Search"
             >
               <Search className="h-[18px] w-[18px]" />
             </button>
             <button
-              className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+              className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
               aria-label="Notifications"
             >
               <Bell className="h-[18px] w-[18px]" />
-              <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
             </button>
           </>
         )}
@@ -160,7 +159,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-border safe-bottom"
+      className="fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-border/50 safe-bottom"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -172,23 +171,27 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-xl transition-all duration-200",
+                "relative flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-xl transition-all duration-200",
                 isActive
                   ? "text-primary"
                   : "text-foreground-subtle hover:text-foreground-muted"
               )}
               aria-current={isActive ? "page" : undefined}
             >
+              {/* Active indicator glow */}
+              {isActive && (
+                <span className="absolute inset-0 rounded-xl bg-primary/8 blur-sm" />
+              )}
               <span
                 className={cn(
-                  "transition-all duration-200",
-                  isActive && "scale-105"
+                  "relative transition-all duration-200",
+                  isActive && "scale-110"
                 )}
               >
                 {item.icon}
               </span>
               <span className={cn(
-                "text-[10px] font-medium transition-colors duration-200",
+                "relative text-[10px] font-medium transition-colors duration-200",
                 isActive ? "text-primary" : "text-foreground-subtle"
               )}>
                 {item.label}
@@ -211,17 +214,73 @@ interface SidebarProps {
 export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: SidebarProps) {
   const pathname = usePathname();
 
-  // Close mobile sidebar on route change
   useEffect(() => {
     onCloseMobile();
   }, [pathname, onCloseMobile]);
+
+  // Group nav items by section
+  const mainItems = navItems.filter(i => i.section === "main");
+  const socialItems = navItems.filter(i => i.section === "social");
+  const accountItems = navItems.filter(i => i.section === "account");
+
+  const NavLink = ({ item }: { item: NavItem }) => {
+    const isActive = pathname === item.href;
+    return (
+      <Link
+        href={item.href}
+        className={cn(
+          "group relative flex items-center gap-3 rounded-xl font-medium transition-all duration-200",
+          isCollapsed ? "lg:justify-center lg:px-0 lg:py-3" : "px-3 py-2.5",
+          "px-3 py-2.5",
+          isActive
+            ? "text-primary"
+            : "text-foreground-muted hover:text-foreground"
+        )}
+        aria-current={isActive ? "page" : undefined}
+        title={isCollapsed ? item.label : undefined}
+      >
+        {/* Active background with glow */}
+        {isActive && (
+          <span className="absolute inset-0 rounded-xl bg-primary/10 shadow-[inset_0_0_0_1px_rgba(220,38,38,0.15)]" />
+        )}
+        
+        {/* Hover background */}
+        <span className={cn(
+          "absolute inset-0 rounded-xl bg-white/[0.03] opacity-0 transition-opacity duration-200",
+          !isActive && "group-hover:opacity-100"
+        )} />
+        
+        <span className={cn(
+          "relative shrink-0 transition-transform duration-200",
+          isActive && "scale-110"
+        )}>
+          {item.icon}
+        </span>
+        <span className={cn(
+          "relative text-sm transition-all duration-200",
+          isCollapsed && "lg:hidden"
+        )}>
+          {item.label}
+        </span>
+      </Link>
+    );
+  };
+
+  const SectionDivider = ({ collapsed }: { collapsed: boolean }) => (
+    <div className={cn(
+      "my-2 transition-all duration-200",
+      collapsed ? "lg:mx-3 lg:my-3" : "mx-3"
+    )}>
+      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+    </div>
+  );
 
   return (
     <>
       {/* Mobile Backdrop */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-background-overlay transition-opacity duration-300 lg:hidden",
+          "fixed inset-0 z-40 bg-black/80 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
           isMobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={onCloseMobile}
@@ -232,23 +291,20 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
       <aside
         className={cn(
           "fixed left-0 top-0 z-50 h-full transition-all duration-300 ease-out",
-          // Mobile behavior: slide in/out as drawer
           "lg:translate-x-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
-          // Desktop behavior: expand/collapse width
           isCollapsed ? "lg:w-[72px]" : "lg:w-64"
         )}
       >
         <div className={cn(
           "flex h-full flex-col",
-          "bg-background-subtle/50 border-r border-border",
-          "backdrop-blur-xl",
-          // Mobile always full width
+          "bg-background-subtle/80 border-r border-border/50",
+          "backdrop-blur-2xl",
           "w-64 lg:w-full"
         )}>
           {/* Header */}
           <div className={cn(
-            "flex h-16 items-center border-b border-border/50 shrink-0",
+            "flex h-16 items-center border-b border-border/30 shrink-0",
             isCollapsed ? "lg:justify-center lg:px-0" : "justify-between",
             "px-4"
           )}>
@@ -259,7 +315,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
                 isCollapsed && "lg:hidden"
               )}
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-sm shrink-0">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/90 shadow-lg shadow-primary/25 shrink-0">
                 <span className="text-sm font-bold text-primary-foreground">BF</span>
               </div>
               <span className="font-heading text-lg font-semibold text-foreground">
@@ -267,20 +323,18 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               </span>
             </Link>
             
-            {/* Collapsed state logo */}
             {isCollapsed && (
               <Link 
                 href="/" 
-                className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-sm"
+                className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-primary/90 shadow-lg shadow-primary/25"
               >
                 <span className="text-sm font-bold text-primary-foreground">BF</span>
               </Link>
             )}
 
-            {/* Mobile close button */}
             <button
               onClick={onCloseMobile}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200 lg:hidden"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200 lg:hidden"
               aria-label="Close sidebar"
             >
               <X className="h-4 w-4" />
@@ -288,72 +342,87 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto p-3" role="navigation">
-            <ul className="space-y-1">
-              {navItems.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "group flex items-center gap-3 rounded-xl font-medium transition-all duration-200",
-                        isCollapsed ? "lg:justify-center lg:px-0 lg:py-3" : "px-3 py-2.5",
-                        "px-3 py-2.5",
-                        isActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-foreground-muted hover:text-foreground hover:bg-muted/50"
-                      )}
-                      aria-current={isActive ? "page" : undefined}
-                      title={isCollapsed ? item.label : undefined}
-                    >
-                      <span className={cn(
-                        "shrink-0 transition-transform duration-200",
-                        isActive && "scale-105"
-                      )}>
-                        {item.icon}
-                      </span>
-                      <span className={cn(
-                        "text-sm transition-all duration-200",
-                        isCollapsed && "lg:hidden"
-                      )}>
-                        {item.label}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
+          <nav className="flex-1 overflow-y-auto p-3 hide-scrollbar" role="navigation">
+            {/* Main Section */}
+            <ul className="space-y-0.5">
+              {mainItems.map((item) => (
+                <li key={item.href}>
+                  <NavLink item={item} />
+                </li>
+              ))}
+            </ul>
+
+            <SectionDivider collapsed={isCollapsed} />
+
+            {/* Social Section */}
+            <ul className="space-y-0.5">
+              {socialItems.map((item) => (
+                <li key={item.href}>
+                  <NavLink item={item} />
+                </li>
+              ))}
+            </ul>
+
+            <SectionDivider collapsed={isCollapsed} />
+
+            {/* Account Section */}
+            <ul className="space-y-0.5">
+              {accountItems.map((item) => (
+                <li key={item.href}>
+                  <NavLink item={item} />
+                </li>
+              ))}
             </ul>
           </nav>
 
-          {/* Footer with toggle */}
-          <div className="border-t border-border/50 p-3 shrink-0">
+          {/* Footer */}
+          <div className="border-t border-border/30 p-3 shrink-0 space-y-2">
+            {/* Settings link */}
+            <Link
+              href="/settings"
+              className={cn(
+                "group relative flex items-center gap-3 rounded-xl text-foreground-muted hover:text-foreground transition-all duration-200",
+                isCollapsed ? "lg:justify-center lg:p-3" : "px-3 py-2.5"
+              )}
+              title={isCollapsed ? "Settings" : undefined}
+            >
+              <span className="absolute inset-0 rounded-xl bg-white/[0.03] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+              <Settings className="relative h-[18px] w-[18px]" />
+              <span className={cn(
+                "relative text-sm",
+                isCollapsed && "lg:hidden"
+              )}>
+                Settings
+              </span>
+            </Link>
+
             {/* Desktop Toggle Button */}
             <button
               onClick={onToggle}
               className={cn(
-                "hidden lg:flex items-center gap-3 w-full rounded-xl text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200",
+                "hidden lg:flex items-center gap-3 w-full rounded-xl text-foreground-muted hover:text-foreground transition-all duration-200 group relative",
                 isCollapsed ? "justify-center p-3" : "px-3 py-2.5"
               )}
               aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
+              <span className="absolute inset-0 rounded-xl bg-white/[0.03] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
               {isCollapsed ? (
-                <PanelLeft className="h-[18px] w-[18px]" />
+                <PanelLeft className="relative h-[18px] w-[18px]" />
               ) : (
                 <>
-                  <PanelLeftClose className="h-[18px] w-[18px]" />
-                  <span className="text-sm">Collapse</span>
+                  <PanelLeftClose className="relative h-[18px] w-[18px]" />
+                  <span className="relative text-sm">Collapse</span>
                 </>
               )}
             </button>
 
-            {/* User section - hidden when collapsed on desktop */}
+            {/* User section */}
             <div className={cn(
-              "flex items-center gap-3 mt-3",
+              "flex items-center gap-3 p-2 rounded-xl bg-white/[0.02] border border-border/30",
               isCollapsed && "lg:hidden"
             )}>
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted shrink-0">
-                <User className="h-4 w-4 text-foreground-muted" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 shrink-0">
+                <User className="h-4 w-4 text-primary/80" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground truncate">Guest</p>
@@ -361,11 +430,10 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               </div>
             </div>
 
-            {/* Collapsed user avatar */}
             {isCollapsed && (
-              <div className="hidden lg:flex justify-center mt-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
-                  <User className="h-4 w-4 text-foreground-muted" />
+              <div className="hidden lg:flex justify-center">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20">
+                  <User className="h-4 w-4 text-primary/80" />
                 </div>
               </div>
             )}
@@ -384,13 +452,13 @@ interface DesktopHeaderProps {
 export function DesktopHeader({ isCollapsed, onMenuClick }: DesktopHeaderProps) {
   return (
     <header className={cn(
-      "hidden lg:flex sticky top-0 z-30 h-16 items-center justify-between px-6 glass-strong border-b border-border transition-all duration-300",
+      "hidden lg:flex sticky top-0 z-30 h-16 items-center justify-between px-6 glass-strong border-b border-border/50 transition-all duration-300",
       isCollapsed ? "lg:pl-[96px]" : "lg:pl-[280px]"
     )}>
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
           aria-label="Toggle sidebar"
         >
           {isCollapsed ? (
@@ -400,30 +468,30 @@ export function DesktopHeader({ isCollapsed, onMenuClick }: DesktopHeaderProps) 
           )}
         </button>
         
-        <div className="relative">
-          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-subtle" />
+        <div className="relative group">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-subtle transition-colors duration-200 group-focus-within:text-foreground-muted" />
           <input
             type="search"
             placeholder="Search matches, events, fans..."
-            className="h-10 w-80 rounded-xl border border-border bg-background-subtle/50 pl-10 pr-4 text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none focus:border-border-focus focus:bg-background-elevated transition-all duration-200"
+            className="h-10 w-80 rounded-xl border border-border/50 bg-background-subtle/50 pl-10 pr-4 text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none focus:border-border-focus focus:bg-background-elevated transition-all duration-200"
           />
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <button
-          className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+          className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
           aria-label="Notifications"
         >
           <Bell className="h-[18px] w-[18px]" />
-          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
+          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
         </button>
 
-        <div className="h-5 w-px bg-border mx-1" />
+        <div className="h-5 w-px bg-border/50 mx-1" />
 
-        <button className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-muted/50 transition-all duration-200">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-            <User className="h-4 w-4 text-foreground-muted" />
+        <button className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-white/5 transition-all duration-200 group">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 transition-all duration-200 group-hover:ring-primary/30">
+            <User className="h-4 w-4 text-primary/80" />
           </div>
           <span className="text-sm font-medium text-foreground">Guest</span>
         </button>

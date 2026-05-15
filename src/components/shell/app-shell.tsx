@@ -12,19 +12,12 @@ import {
 
 interface AppShellProps {
   children: ReactNode;
-  /** Page title for mobile header */
   title?: string;
-  /** Show back button instead of logo */
   showBack?: boolean;
-  /** Callback when back button is clicked */
   onBack?: () => void;
-  /** Custom actions for mobile header */
   headerActions?: ReactNode;
-  /** Make header transparent (for hero sections) */
   transparentHeader?: boolean;
-  /** Hide bottom navigation */
   hideBottomNav?: boolean;
-  /** Additional classes for main content */
   className?: string;
 }
 
@@ -43,13 +36,12 @@ export function AppShell({
     isMobileOpen,
     isHydrated,
     toggle,
-    openMobile,
     closeMobile,
   } = useSidebarState();
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Desktop Sidebar - always visible on lg+ */}
+      {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <Sidebar 
           isCollapsed={isCollapsed} 
@@ -59,7 +51,7 @@ export function AppShell({
         />
       </div>
 
-      {/* Mobile Sidebar - overlay drawer */}
+      {/* Mobile Sidebar */}
       <div className="lg:hidden">
         <Sidebar 
           isCollapsed={false} 
@@ -86,13 +78,11 @@ export function AppShell({
         />
       </div>
 
-      {/* Main Content - adjusts based on sidebar state */}
+      {/* Main Content */}
       <main
         className={cn(
           "transition-all duration-300 ease-out",
-          // Desktop: offset by sidebar width
           isHydrated && !isCollapsed ? "lg:pl-64" : "lg:pl-[72px]",
-          // Mobile: bottom padding for nav
           !hideBottomNav && "pb-20 lg:pb-0",
           className
         )}
@@ -112,11 +102,8 @@ export function AppShell({
 
 interface PageContainerProps {
   children: ReactNode;
-  /** Maximum width variant */
   size?: "sm" | "md" | "lg" | "xl" | "full";
-  /** Additional padding */
   padded?: boolean;
-  /** Additional classes */
   className?: string;
 }
 
@@ -139,7 +126,7 @@ export function PageContainer({
       className={cn(
         "mx-auto w-full",
         sizeClasses[size],
-        padded && "px-4 py-8 lg:px-8 lg:py-12",
+        padded && "px-4 py-10 lg:px-8 lg:py-14",
         className
       )}
     >
@@ -150,13 +137,9 @@ export function PageContainer({
 
 interface SectionProps {
   children: ReactNode;
-  /** Section title */
   title?: string;
-  /** Section subtitle/description */
   subtitle?: string;
-  /** Action button/link for the section */
   action?: ReactNode;
-  /** Additional classes */
   className?: string;
 }
 
@@ -168,10 +151,10 @@ export function Section({
   className,
 }: SectionProps) {
   return (
-    <section className={cn("space-y-6", className)}>
+    <section className={cn("space-y-8", className)}>
       {(title || subtitle || action) && (
         <div className="flex items-end justify-between gap-4">
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {title && (
               <h2 className="text-heading-lg text-foreground">{title}</h2>
             )}
@@ -189,27 +172,23 @@ export function Section({
 
 interface HeroSectionProps {
   children?: ReactNode;
-  /** Background image URL */
   backgroundImage?: string;
-  /** Overlay intensity (0-100) */
   overlayIntensity?: number;
-  /** Hero height */
   height?: "sm" | "md" | "lg" | "full";
-  /** Additional classes */
   className?: string;
 }
 
 export function HeroSection({
   children,
   backgroundImage,
-  overlayIntensity = 60,
+  overlayIntensity = 70,
   height = "md",
   className,
 }: HeroSectionProps) {
   const heightClasses = {
-    sm: "min-h-[240px]",
-    md: "min-h-[360px]",
-    lg: "min-h-[480px]",
+    sm: "min-h-[280px]",
+    md: "min-h-[400px]",
+    lg: "min-h-[520px]",
     full: "min-h-[100vh]",
   };
 
@@ -229,33 +208,42 @@ export function HeroSection({
         />
       )}
 
-      {/* Premium multi-layer gradient overlay */}
+      {/* Cinematic multi-layer gradient - deeper, richer */}
       <div
         className="absolute inset-0"
         style={{
           background: `
-            linear-gradient(to top, var(--background) 0%, transparent 40%),
-            linear-gradient(to top, rgba(5, 5, 6, ${overlayIntensity / 100}) 0%, rgba(5, 5, 6, 0.4) 60%, rgba(5, 5, 6, 0.2) 100%)
+            linear-gradient(to top, var(--background) 0%, transparent 50%),
+            linear-gradient(to top, rgba(3, 3, 4, ${overlayIntensity / 100}) 0%, rgba(3, 3, 4, 0.5) 50%, rgba(3, 3, 4, 0.3) 100%)
           `,
         }}
       />
 
-      {/* Cinematic red atmospheric glow */}
+      {/* Stadium atmospheric red glow - cinematic lighting */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 120% 80% at 50% 20%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse 80% 60% at 20% 80%, rgba(239, 68, 68, 0.04) 0%, transparent 40%)
+            radial-gradient(ellipse 150% 100% at 50% -20%, rgba(220, 38, 38, 0.08) 0%, transparent 45%),
+            radial-gradient(ellipse 100% 80% at 80% 20%, rgba(220, 38, 38, 0.04) 0%, transparent 35%),
+            radial-gradient(ellipse 80% 60% at 15% 80%, rgba(220, 38, 38, 0.03) 0%, transparent 30%)
           `,
         }}
       />
 
-      {/* Subtle vignette */}
+      {/* Subtle noise texture overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.015]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Deep vignette for cinematic depth */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center, transparent 40%, rgba(5, 5, 6, 0.4) 100%)",
+          background: "radial-gradient(ellipse at center, transparent 30%, rgba(3, 3, 4, 0.5) 100%)",
         }}
       />
 

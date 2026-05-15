@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Play, Star, ChevronRight, Trophy, Users, Zap, Sparkles } from "lucide-react";
+import { ArrowRight, Play, Star, ChevronRight, Trophy, Users, Zap, Sparkles, TrendingUp } from "lucide-react";
 import { AppShell, PageContainer, Section, HeroSection } from "@/components/shell";
 import {
   Button,
@@ -30,39 +30,44 @@ export default function Home() {
 
   return (
     <AppShell>
-      {/* Cinematic Hero Section */}
-      <HeroSection height="lg" overlayIntensity={75}>
-        <PageContainer className="pb-12 lg:pb-16">
-          <div className="space-y-8 animate-fade-up max-w-2xl">
-            {/* Live indicator badge */}
-            <div className="inline-flex items-center gap-2.5 rounded-full bg-primary/10 border border-primary/20 px-4 py-2 backdrop-blur-sm">
+      {/* Cinematic Hero Section with Stadium Atmosphere */}
+      <HeroSection height="lg" overlayIntensity={80}>
+        {/* Ambient stadium glow */}
+        <div className="absolute inset-0 gradient-stadium pointer-events-none" />
+        
+        <PageContainer className="pb-16 lg:pb-20">
+          <div className="space-y-10 animate-fade-up max-w-2xl">
+            {/* Live indicator badge - premium glass */}
+            <div className="inline-flex items-center gap-2.5 rounded-full bg-primary/8 border border-primary/20 px-4 py-2 backdrop-blur-xl shadow-lg shadow-primary/5">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary shadow-lg shadow-primary/50" />
               </span>
               <span className="text-sm font-medium text-primary">3 Live Matches</span>
             </div>
             
-            {/* Hero headline */}
-            <div className="space-y-4">
-              <h1 className="text-display-xl text-foreground text-balance">
-                Experience Football
-                <span className="block text-foreground-muted">Like Never Before</span>
+            {/* Hero headline - Editorial typography */}
+            <div className="space-y-5">
+              <h1 className="text-display-xl text-foreground">
+                <span className="block">Experience Football</span>
+                <span className="block bg-gradient-to-r from-foreground-muted via-foreground-subtle to-foreground-muted bg-clip-text text-transparent">
+                  Like Never Before
+                </span>
               </h1>
               
-              <p className="text-body-lg text-foreground-muted max-w-lg leading-relaxed">
+              <p className="text-body-lg text-foreground-muted max-w-lg">
                 Join millions of passionate fans. Get live updates, exclusive content, and connect with your community.
               </p>
             </div>
             
-            {/* CTA buttons */}
+            {/* CTA buttons - Premium styling */}
             <div className="flex flex-wrap gap-4 pt-2">
-              <Button size="xl" className="group">
+              <Button size="xl" className="group shadow-xl shadow-primary/20">
                 Get Started
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
               <Button variant="secondary" size="xl" className="group">
-                <Play className="h-4 w-4 transition-transform group-hover:scale-110" />
+                <Play className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
                 Watch Highlights
               </Button>
             </div>
@@ -70,32 +75,44 @@ export default function Home() {
         </PageContainer>
       </HeroSection>
 
-      <PageContainer className="space-y-16 lg:space-y-20">
-        {/* Stats Section - Premium glass cards */}
-        <div className="grid grid-cols-3 gap-3 lg:gap-4 -mt-8 relative z-10">
+      <PageContainer className="space-y-20 lg:space-y-24">
+        {/* Stats Section - Premium glass cards with depth */}
+        <div className="grid grid-cols-3 gap-3 lg:gap-5 -mt-12 relative z-10">
           {[
-            { icon: Trophy, label: "Live Matches", value: "24", accent: true },
-            { icon: Users, label: "Active Fans", value: "1.2M", accent: false },
-            { icon: Zap, label: "Events Today", value: "156", accent: false },
+            { icon: Trophy, label: "Live Matches", value: "24", trend: "+3 today", featured: true },
+            { icon: Users, label: "Active Fans", value: "1.2M", trend: "+12.5%", featured: false },
+            { icon: Zap, label: "Events Today", value: "156", trend: "Peak hour", featured: false },
           ].map((stat, index) => (
             <Card 
               key={stat.label} 
-              variant="glass" 
+              variant={stat.featured ? "featured" : "glass"} 
               padding="lg" 
-              className={`text-center ${index === 0 ? "border-primary/20" : ""}`}
+              className="text-center group"
             >
-              <div className={`mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${stat.accent ? "bg-primary/10" : "bg-muted/50"}`}>
-                <stat.icon className={`h-5 w-5 ${stat.accent ? "text-primary" : "text-foreground-muted"}`} />
+              <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 ${
+                stat.featured 
+                  ? "bg-primary/15 group-hover:bg-primary/20 shadow-lg shadow-primary/10" 
+                  : "bg-white/5 group-hover:bg-white/8"
+              }`}>
+                <stat.icon className={`h-5 w-5 transition-transform duration-300 group-hover:scale-110 ${
+                  stat.featured ? "text-primary" : "text-foreground-muted"
+                }`} />
               </div>
               <p className="text-display-md text-foreground mb-1">{stat.value}</p>
-              <p className="text-caption">{stat.label}</p>
+              <p className="text-caption mb-2">{stat.label}</p>
+              <div className={`inline-flex items-center gap-1 text-xs font-medium ${
+                stat.featured ? "text-primary/80" : "text-foreground-subtle"
+              }`}>
+                <TrendingUp className="h-3 w-3" />
+                {stat.trend}
+              </div>
             </Card>
           ))}
         </div>
 
-        {/* Controls Demo */}
+        {/* Controls Demo - Refined spacing */}
         <Section title="Quick Filters">
-          <div className="space-y-4">
+          <div className="space-y-5">
             <SegmentedControl
               options={[
                 { value: "all", label: "All" },
@@ -120,46 +137,49 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Featured Matches - Premium cards */}
+        {/* Featured Matches - Premium cinematic cards */}
         <Section 
           title="Featured Matches" 
           subtitle="Top games happening right now"
           action={
             <Button variant="ghost" size="sm" className="group">
               View All
-              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           }
         >
-          <div className="grid gap-4 lg:gap-6 md:grid-cols-2">
-            {/* Live Match Card */}
-            <Card variant="premium" padding="lg" className="group">
+          <div className="grid gap-5 lg:gap-6 md:grid-cols-2">
+            {/* Live Match Card - Featured variant */}
+            <Card variant="featured" padding="lg" className="group">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
-                    <span className="text-overline text-primary">Live</span>
+                  <div className="flex items-center gap-2.5 rounded-full bg-primary/10 px-3 py-1.5">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+                    </span>
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wide">Live</span>
                   </div>
-                  <div className="flex items-center gap-1 text-foreground-subtle">
-                    <Sparkles className="h-3.5 w-3.5" />
+                  <div className="flex items-center gap-1.5 text-foreground-subtle">
+                    <Sparkles className="h-3.5 w-3.5 text-warning" />
                     <span className="text-xs font-medium">Featured</span>
                   </div>
                 </div>
-                <CardTitle className="mt-2">Barcelona vs Real Madrid</CardTitle>
+                <CardTitle className="mt-3">Barcelona vs Real Madrid</CardTitle>
                 <CardDescription>La Liga - Matchday 15</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between py-6">
-                  <div className="text-center space-y-2">
-                    <div className="h-14 w-14 rounded-full bg-muted/50 mx-auto ring-2 ring-border/50" />
+                <div className="flex items-center justify-between py-8">
+                  <div className="text-center space-y-3">
+                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
                     <p className="text-label">Barcelona</p>
                   </div>
                   <div className="text-center px-4">
-                    <p className="text-display-md text-foreground font-bold">2 - 1</p>
-                    <p className="text-caption mt-1">78&apos;</p>
+                    <p className="text-display-lg text-foreground font-bold tracking-tight">2 - 1</p>
+                    <p className="text-caption mt-2 text-primary/80 font-medium">78&apos;</p>
                   </div>
-                  <div className="text-center space-y-2">
-                    <div className="h-14 w-14 rounded-full bg-muted/50 mx-auto ring-2 ring-border/50" />
+                  <div className="text-center space-y-3">
+                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
                     <p className="text-label">Real Madrid</p>
                   </div>
                 </div>
@@ -168,37 +188,37 @@ export default function Home() {
                 <Button variant="secondary" size="sm" className="flex-1">
                   Match Details
                 </Button>
-                <Button size="sm" className="flex-1">
+                <Button size="sm" className="flex-1 shadow-lg shadow-primary/20">
                   Watch Live
                 </Button>
               </CardFooter>
             </Card>
 
-            {/* Upcoming Match Card */}
-            <Card variant="highlight" padding="lg" className="group">
+            {/* Upcoming Match Card - Highlight variant */}
+            <Card variant="premium" padding="lg" className="group">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <span className="text-overline">Upcoming</span>
-                  <div className="flex items-center gap-1.5 text-warning">
-                    <Star className="h-3.5 w-3.5 fill-current" />
-                    <span className="text-xs font-medium">Hot Match</span>
+                  <div className="flex items-center gap-1.5">
+                    <Star className="h-3.5 w-3.5 fill-warning text-warning" />
+                    <span className="text-xs font-medium text-warning">Hot Match</span>
                   </div>
                 </div>
-                <CardTitle className="mt-2">Manchester City vs Liverpool</CardTitle>
+                <CardTitle className="mt-3">Manchester City vs Liverpool</CardTitle>
                 <CardDescription>Premier League - Matchday 12</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between py-6">
-                  <div className="text-center space-y-2">
-                    <div className="h-14 w-14 rounded-full bg-muted/50 mx-auto ring-2 ring-border/50" />
+                <div className="flex items-center justify-between py-8">
+                  <div className="text-center space-y-3">
+                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
                     <p className="text-label">Man City</p>
                   </div>
                   <div className="text-center px-4">
                     <p className="text-heading-lg text-foreground-muted">VS</p>
-                    <p className="text-caption mt-1">Tomorrow, 20:00</p>
+                    <p className="text-caption mt-2">Tomorrow, 20:00</p>
                   </div>
-                  <div className="text-center space-y-2">
-                    <div className="h-14 w-14 rounded-full bg-muted/50 mx-auto ring-2 ring-border/50" />
+                  <div className="text-center space-y-3">
+                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
                     <p className="text-label">Liverpool</p>
                   </div>
                 </div>
@@ -238,7 +258,7 @@ export default function Home() {
 
         {/* Input Demo */}
         <Section title="Form Elements">
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             <Input 
               label="Email Address" 
               placeholder="you@example.com" 
@@ -294,7 +314,7 @@ export default function Home() {
 
         {/* Skeleton Demo */}
         <Section title="Skeleton Loaders">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-5 md:grid-cols-2">
             <SkeletonCard />
             <div className="space-y-4">
               <Skeleton className="h-40 w-full" />
