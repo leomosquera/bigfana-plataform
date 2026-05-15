@@ -9,7 +9,8 @@ import {
   MessageCircle, ThumbsUp, Send, Camera, Image as ImageIcon,
   Check, AlertCircle, Info, Loader2, RefreshCw, ExternalLink,
   Copy, Download, Upload, Filter, SlidersHorizontal, Grid, List,
-  Zap, Crown, Award, Target, TrendingUp, BarChart2, Trash2, Edit3
+  Zap, Crown, Award, Target, TrendingUp, BarChart2, Trash2, Edit3,
+  Moon, Sun, Monitor
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,10 @@ import {
   MultiStepSheet, CommerceSheet, MatchDetailsSheet 
 } from "@/components/ui/sheet";
 import { EmptyState, LoadingState, Skeleton, SkeletonCard, SkeletonList } from "@/components/ui/states";
-import { BottomNav, MobileHeader, Sidebar, DesktopHeader, useSidebarState } from "@/components/shell/navigation";
+import { 
+  BottomNav, MobileHeader, MobileDrawer, Sidebar, TabletRail, 
+  DesktopHeader, StickyActionBar, useSidebarState, useTheme 
+} from "@/components/shell/navigation";
 import { 
   ContentRail, MatchRail, StoryRail, MediaRail, MerchRail, 
   CompactCardRail, HeroCarousel 
@@ -469,6 +473,65 @@ function SearchInput({
         onChange={(e) => onChange?.(e.target.value)}
         className="h-12 w-full rounded-xl border border-border bg-input pl-12 pr-4 text-body-md text-foreground placeholder:text-foreground-subtle focus:outline-none focus:border-border-focus focus:ring-2 focus:ring-primary/20 transition-all duration-200"
       />
+    </div>
+  );
+}
+
+// Theme Switcher Demo
+function ThemeSwitcherDemo() {
+  const { theme, setTheme } = useTheme();
+  
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-body-sm text-foreground-muted">Current theme: <strong className="text-foreground">{theme}</strong></p>
+      <div className="flex gap-3">
+        <button
+          onClick={() => setTheme("dark")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200 touch-target",
+            theme === "dark" 
+              ? "bg-primary/10 text-primary border border-primary/20" 
+              : "bg-muted/50 text-foreground-muted hover:bg-muted border border-transparent"
+          )}
+        >
+          <Moon className="h-5 w-5" />
+          <span className="text-body-md font-medium">Dark</span>
+        </button>
+        <button
+          onClick={() => setTheme("light")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200 touch-target",
+            theme === "light" 
+              ? "bg-primary/10 text-primary border border-primary/20" 
+              : "bg-muted/50 text-foreground-muted hover:bg-muted border border-transparent"
+          )}
+        >
+          <Sun className="h-5 w-5" />
+          <span className="text-body-md font-medium">Light</span>
+        </button>
+        <button
+          onClick={() => setTheme("system")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200 touch-target",
+            theme === "system" 
+              ? "bg-primary/10 text-primary border border-primary/20" 
+              : "bg-muted/50 text-foreground-muted hover:bg-muted border border-transparent"
+          )}
+        >
+          <Monitor className="h-5 w-5" />
+          <span className="text-body-md font-medium">System</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Color Swatch
+function ColorSwatch({ name, className }: { name: string; className: string }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className={cn("h-16 rounded-xl", className)} />
+      <span className="text-caption text-foreground-muted">{name}</span>
     </div>
   );
 }
@@ -1259,20 +1322,27 @@ export default function UIKitPage() {
           {/* ============================================ */}
           <Section 
             title="Navigation" 
-            description="Mobile bottom navigation, headers, and desktop sidebar patterns."
+            description="Responsive navigation: mobile bottom nav, tablet rail, desktop sidebar, and mobile drawer."
           >
             <SubSection title="Mobile Header Variants">
               <div className="space-y-4">
+                <p className="text-caption text-foreground-muted mb-2">Default with menu trigger</p>
                 <div className="rounded-2xl border border-border overflow-hidden bg-background-subtle">
-                  <MobileHeader />
+                  <MobileHeader onMenuClick={sidebar.openMobile} />
                 </div>
+                <p className="text-caption text-foreground-muted mb-2">With back button and title</p>
                 <div className="rounded-2xl border border-border overflow-hidden bg-background-subtle">
-                  <MobileHeader title="Matches" showBack onBack={() => {}} />
+                  <MobileHeader title="Match Details" showBack onBack={() => {}} />
+                </div>
+                <p className="text-caption text-foreground-muted mb-2">Transparent variant</p>
+                <div className="rounded-2xl border border-border overflow-hidden bg-gradient-to-b from-primary/10 to-background-subtle">
+                  <MobileHeader title="Live Match" transparent />
                 </div>
               </div>
             </SubSection>
 
             <SubSection title="Bottom Navigation">
+              <p className="text-body-sm text-foreground-muted mb-4">Fixed mobile tab bar with 5 primary destinations</p>
               <div className="relative rounded-2xl border border-border overflow-hidden bg-background-subtle h-24">
                 <div className="absolute bottom-0 left-0 right-0">
                   <BottomNav />
@@ -1280,13 +1350,128 @@ export default function UIKitPage() {
               </div>
             </SubSection>
 
+            <SubSection title="Mobile Drawer">
+              <p className="text-body-sm text-foreground-muted mb-4">Immersive side menu with profile, quick access, settings, and theme switcher</p>
+              <Button onClick={sidebar.openMobile}>Open Mobile Drawer</Button>
+              <MobileDrawer open={sidebar.isMobileOpen} onClose={sidebar.closeMobile} />
+            </SubSection>
+
+            <SubSection title="Tablet Rail Sidebar">
+              <p className="text-body-sm text-foreground-muted mb-4">Compact icon-only sidebar for tablet viewports (768px-1023px)</p>
+              <div className="relative rounded-2xl border border-border overflow-hidden bg-background-subtle h-80 w-24">
+                <div className="absolute inset-0 flex flex-col items-center py-4 gap-4 border-r border-border/40 bg-background-subtle/90">
+                  <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
+                    <span className="text-sm font-bold text-primary-foreground">BF</span>
+                  </div>
+                  <div className="flex-1 flex flex-col items-center gap-2 py-4">
+                    <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                      <Home className="h-5 w-5" />
+                    </div>
+                    <div className="h-12 w-12 rounded-xl flex items-center justify-center text-foreground-muted hover:bg-white/[0.04]">
+                      <Trophy className="h-5 w-5" />
+                    </div>
+                    <div className="h-12 w-12 rounded-xl flex items-center justify-center text-foreground-muted hover:bg-white/[0.04]">
+                      <Calendar className="h-5 w-5" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SubSection>
+
             <SubSection title="Sticky Action Bar">
-              <div className="glass-strong border-t border-border/40 p-4 rounded-xl flex items-center justify-between">
+              <p className="text-body-sm text-foreground-muted mb-4">Fixed CTA bar for mobile purchase flows</p>
+              <div className="glass-strong border border-border/40 p-4 rounded-xl flex items-center justify-between">
                 <div>
                   <p className="text-body-sm text-foreground">Season Pass</p>
                   <p className="text-heading-md text-foreground">$299/year</p>
                 </div>
                 <Button>Subscribe Now</Button>
+              </div>
+            </SubSection>
+          </Section>
+
+          {/* ============================================ */}
+          {/* THEME SYSTEM SECTION */}
+          {/* ============================================ */}
+          <Section 
+            title="Theme System" 
+            description="Multi-tenant branding with dark/light modes and configurable club colors."
+          >
+            <SubSection title="Theme Switcher">
+              <ThemeSwitcherDemo />
+            </SubSection>
+
+            <SubSection title="Club Theme Presets">
+              <p className="text-body-sm text-foreground-muted mb-4">Apply via data-club attribute on html element</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {[
+                  { name: "BigFana Red", club: "bigfana", hue: "0deg" },
+                  { name: "Blue Club", club: "blue", hue: "217deg" },
+                  { name: "Green Club", club: "green", hue: "142deg" },
+                  { name: "Gold Club", club: "gold", hue: "43deg" },
+                  { name: "Purple Club", club: "purple", hue: "271deg" },
+                  { name: "Sky Blue", club: "skyblue", hue: "199deg" },
+                ].map((preset) => (
+                  <button
+                    key={preset.club}
+                    onClick={() => {
+                      document.documentElement.setAttribute("data-club", preset.club);
+                    }}
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border/40 bg-card hover:bg-card-hover transition-colors"
+                  >
+                    <div 
+                      className="h-10 w-10 rounded-full"
+                      style={{ 
+                        background: `hsl(${preset.hue} 84% 51%)`,
+                        boxShadow: `0 0 20px hsl(${preset.hue} 84% 51% / 0.3)`
+                      }}
+                    />
+                    <span className="text-caption text-foreground-muted">{preset.name}</span>
+                  </button>
+                ))}
+              </div>
+            </SubSection>
+
+            <SubSection title="Color Tokens">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <ColorSwatch name="Primary" className="bg-primary" />
+                <ColorSwatch name="Primary Hover" className="bg-primary-hover" />
+                <ColorSwatch name="Success" className="bg-success" />
+                <ColorSwatch name="Warning" className="bg-warning" />
+                <ColorSwatch name="Destructive" className="bg-destructive" />
+                <ColorSwatch name="Info" className="bg-info" />
+                <ColorSwatch name="Background" className="bg-background border border-border" />
+                <ColorSwatch name="Card" className="bg-card border border-border" />
+              </div>
+            </SubSection>
+
+            <SubSection title="Surface Layers">
+              <div className="flex flex-wrap gap-3">
+                <div className="p-6 rounded-xl bg-background border border-border">
+                  <span className="text-caption">Background</span>
+                </div>
+                <div className="p-6 rounded-xl bg-background-subtle">
+                  <span className="text-caption">Subtle</span>
+                </div>
+                <div className="p-6 rounded-xl bg-background-elevated">
+                  <span className="text-caption">Elevated</span>
+                </div>
+                <div className="p-6 rounded-xl bg-background-surface">
+                  <span className="text-caption">Surface</span>
+                </div>
+                <div className="p-6 rounded-xl bg-card border border-border/40">
+                  <span className="text-caption">Card</span>
+                </div>
+              </div>
+            </SubSection>
+
+            <SubSection title="Reduced Motion">
+              <p className="text-body-sm text-foreground-muted mb-4">
+                Animations respect prefers-reduced-motion. Enable it in your OS accessibility settings.
+              </p>
+              <div className="flex gap-4 items-center">
+                <div className="h-4 w-4 rounded-full bg-primary animate-pulse-soft" />
+                <span className="text-body-sm text-foreground">Pulsing indicator (disabled with reduced motion)</span>
               </div>
             </SubSection>
           </Section>
@@ -2312,10 +2497,16 @@ export default function UIKitPage() {
 
             <SubSection title="Compact Card Rail">
               <CompactCardRail title="Quick Stats">
-                {["Goals", "Assists", "Clean Sheets", "Wins", "Points"].map((stat) => (
-                  <div key={stat} className="p-4 rounded-xl bg-card border border-border/40 text-center">
-                    <p className="text-display-md text-foreground">{Math.floor(Math.random() * 50 + 10)}</p>
-                    <p className="text-caption text-foreground-muted">{stat}</p>
+                {[
+                  { stat: "Goals", value: 32 },
+                  { stat: "Assists", value: 18 },
+                  { stat: "Clean Sheets", value: 12 },
+                  { stat: "Wins", value: 24 },
+                  { stat: "Points", value: 78 }
+                ].map((item) => (
+                  <div key={item.stat} className="p-4 rounded-xl bg-card border border-border/40 text-center">
+                    <p className="text-display-md text-foreground">{item.value}</p>
+                    <p className="text-caption text-foreground-muted">{item.stat}</p>
                   </div>
                 ))}
               </CompactCardRail>
