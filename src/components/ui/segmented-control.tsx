@@ -8,6 +8,7 @@ interface SegmentedControlProps {
     value: string;
     label: string;
     icon?: ReactNode;
+    badge?: string | number;
   }[];
   value: string;
   onChange: (value: string) => void;
