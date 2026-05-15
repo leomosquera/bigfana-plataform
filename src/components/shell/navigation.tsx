@@ -99,14 +99,14 @@ export function MobileHeader({
         "sticky top-0 z-40 flex h-14 items-center justify-between px-4 safe-top",
         transparent
           ? "bg-transparent"
-          : "glass-strong border-b border-border/50"
+          : "glass-strong border-b border-border/40"
       )}
     >
       <div className="flex items-center gap-3">
         {showBack && (
           <button
             onClick={onBack}
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200"
             aria-label="Go back"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -114,7 +114,7 @@ export function MobileHeader({
         )}
         {!showBack && (
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/90 shadow-lg shadow-primary/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-lg shadow-primary/30">
               <span className="text-sm font-bold text-primary-foreground">BF</span>
             </div>
             {!title && (
@@ -135,17 +135,17 @@ export function MobileHeader({
         {actions || (
           <>
             <button
-              className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
+              className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200"
               aria-label="Search"
             >
               <Search className="h-[18px] w-[18px]" />
             </button>
             <button
-              className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
+              className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200"
               aria-label="Notifications"
             >
               <Bell className="h-[18px] w-[18px]" />
-              <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
             </button>
           </>
         )}
@@ -159,7 +159,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-border/50 safe-bottom"
+      className="fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-border/40 safe-bottom"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -178,20 +178,14 @@ export function BottomNav() {
               )}
               aria-current={isActive ? "page" : undefined}
             >
-              {/* Active indicator glow */}
               {isActive && (
-                <span className="absolute inset-0 rounded-xl bg-primary/8 blur-sm" />
+                <span className="absolute inset-0 rounded-xl bg-primary/8" />
               )}
-              <span
-                className={cn(
-                  "relative transition-all duration-200",
-                  isActive && "scale-110"
-                )}
-              >
+              <span className={cn("relative transition-transform duration-200", isActive && "scale-110")}>
                 {item.icon}
               </span>
               <span className={cn(
-                "relative text-[10px] font-medium transition-colors duration-200",
+                "relative text-[10px] font-medium",
                 isActive ? "text-primary" : "text-foreground-subtle"
               )}>
                 {item.label}
@@ -218,7 +212,6 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
     onCloseMobile();
   }, [pathname, onCloseMobile]);
 
-  // Group nav items by section
   const mainItems = navItems.filter(i => i.section === "main");
   const socialItems = navItems.filter(i => i.section === "social");
   const accountItems = navItems.filter(i => i.section === "account");
@@ -239,27 +232,21 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
         aria-current={isActive ? "page" : undefined}
         title={isCollapsed ? item.label : undefined}
       >
-        {/* Active background with glow */}
+        {/* Active background - subtle glow */}
         {isActive && (
-          <span className="absolute inset-0 rounded-xl bg-primary/10 shadow-[inset_0_0_0_1px_rgba(220,38,38,0.15)]" />
+          <span className="absolute inset-0 rounded-xl bg-primary/8 shadow-[inset_0_0_0_1px_rgba(220,38,38,0.12)]" />
         )}
         
-        {/* Hover background */}
+        {/* Hover state */}
         <span className={cn(
-          "absolute inset-0 rounded-xl bg-white/[0.03] opacity-0 transition-opacity duration-200",
+          "absolute inset-0 rounded-xl bg-white/[0.025] opacity-0 transition-opacity duration-200",
           !isActive && "group-hover:opacity-100"
         )} />
         
-        <span className={cn(
-          "relative shrink-0 transition-transform duration-200",
-          isActive && "scale-110"
-        )}>
+        <span className={cn("relative shrink-0 transition-transform duration-200", isActive && "scale-105")}>
           {item.icon}
         </span>
-        <span className={cn(
-          "relative text-sm transition-all duration-200",
-          isCollapsed && "lg:hidden"
-        )}>
+        <span className={cn("relative text-sm", isCollapsed && "lg:hidden")}>
           {item.label}
         </span>
       </Link>
@@ -267,11 +254,8 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
   };
 
   const SectionDivider = ({ collapsed }: { collapsed: boolean }) => (
-    <div className={cn(
-      "my-2 transition-all duration-200",
-      collapsed ? "lg:mx-3 lg:my-3" : "mx-3"
-    )}>
-      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+    <div className={cn("my-3", collapsed ? "lg:mx-4 lg:my-4" : "mx-3")}>
+      <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
     </div>
   );
 
@@ -280,7 +264,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
       {/* Mobile Backdrop */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/80 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
+          "fixed inset-0 z-40 bg-black/85 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
           isMobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={onCloseMobile}
@@ -298,7 +282,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
       >
         <div className={cn(
           "flex h-full flex-col",
-          "bg-background-subtle/80 border-r border-border/50",
+          "bg-background-subtle/90 border-r border-border/40",
           "backdrop-blur-2xl",
           "w-64 lg:w-full"
         )}>
@@ -315,7 +299,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
                 isCollapsed && "lg:hidden"
               )}
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/90 shadow-lg shadow-primary/25 shrink-0">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30 shrink-0">
                 <span className="text-sm font-bold text-primary-foreground">BF</span>
               </div>
               <span className="font-heading text-lg font-semibold text-foreground">
@@ -326,7 +310,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
             {isCollapsed && (
               <Link 
                 href="/" 
-                className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-primary/90 shadow-lg shadow-primary/25"
+                className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30"
               >
                 <span className="text-sm font-bold text-primary-foreground">BF</span>
               </Link>
@@ -334,7 +318,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
 
             <button
               onClick={onCloseMobile}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200 lg:hidden"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200 lg:hidden"
               aria-label="Close sidebar"
             >
               <X className="h-4 w-4" />
@@ -343,7 +327,6 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
 
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto p-3 hide-scrollbar" role="navigation">
-            {/* Main Section */}
             <ul className="space-y-0.5">
               {mainItems.map((item) => (
                 <li key={item.href}>
@@ -354,7 +337,6 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
 
             <SectionDivider collapsed={isCollapsed} />
 
-            {/* Social Section */}
             <ul className="space-y-0.5">
               {socialItems.map((item) => (
                 <li key={item.href}>
@@ -365,7 +347,6 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
 
             <SectionDivider collapsed={isCollapsed} />
 
-            {/* Account Section */}
             <ul className="space-y-0.5">
               {accountItems.map((item) => (
                 <li key={item.href}>
@@ -376,8 +357,8 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
           </nav>
 
           {/* Footer */}
-          <div className="border-t border-border/30 p-3 shrink-0 space-y-2">
-            {/* Settings link */}
+          <div className="border-t border-border/30 p-3 shrink-0 space-y-1.5">
+            {/* Settings */}
             <Link
               href="/settings"
               className={cn(
@@ -386,17 +367,14 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               )}
               title={isCollapsed ? "Settings" : undefined}
             >
-              <span className="absolute inset-0 rounded-xl bg-white/[0.03] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+              <span className="absolute inset-0 rounded-xl bg-white/[0.025] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
               <Settings className="relative h-[18px] w-[18px]" />
-              <span className={cn(
-                "relative text-sm",
-                isCollapsed && "lg:hidden"
-              )}>
+              <span className={cn("relative text-sm", isCollapsed && "lg:hidden")}>
                 Settings
               </span>
             </Link>
 
-            {/* Desktop Toggle Button */}
+            {/* Toggle Button */}
             <button
               onClick={onToggle}
               className={cn(
@@ -405,7 +383,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               )}
               aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
-              <span className="absolute inset-0 rounded-xl bg-white/[0.03] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+              <span className="absolute inset-0 rounded-xl bg-white/[0.025] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
               {isCollapsed ? (
                 <PanelLeft className="relative h-[18px] w-[18px]" />
               ) : (
@@ -416,24 +394,24 @@ export function Sidebar({ isCollapsed, isMobileOpen, onToggle, onCloseMobile }: 
               )}
             </button>
 
-            {/* User section */}
+            {/* User */}
             <div className={cn(
-              "flex items-center gap-3 p-2 rounded-xl bg-white/[0.02] border border-border/30",
+              "flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.02] border border-border/30",
               isCollapsed && "lg:hidden"
             )}>
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 shrink-0">
-                <User className="h-4 w-4 text-primary/80" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-primary/5 ring-1 ring-primary/15 shrink-0">
+                <User className="h-4 w-4 text-primary/70" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground truncate">Guest</p>
-                <p className="text-xs text-foreground-subtle">Sign in</p>
+                <p className="text-[11px] text-foreground-subtle">Sign in</p>
               </div>
             </div>
 
             {isCollapsed && (
-              <div className="hidden lg:flex justify-center">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20">
-                  <User className="h-4 w-4 text-primary/80" />
+              <div className="hidden lg:flex justify-center py-1">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-primary/5 ring-1 ring-primary/15">
+                  <User className="h-4 w-4 text-primary/70" />
                 </div>
               </div>
             )}
@@ -452,13 +430,13 @@ interface DesktopHeaderProps {
 export function DesktopHeader({ isCollapsed, onMenuClick }: DesktopHeaderProps) {
   return (
     <header className={cn(
-      "hidden lg:flex sticky top-0 z-30 h-16 items-center justify-between px-6 glass-strong border-b border-border/50 transition-all duration-300",
+      "hidden lg:flex sticky top-0 z-30 h-16 items-center justify-between px-6 glass-strong border-b border-border/40 transition-all duration-300",
       isCollapsed ? "lg:pl-[96px]" : "lg:pl-[280px]"
     )}>
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200"
           aria-label="Toggle sidebar"
         >
           {isCollapsed ? (
@@ -473,25 +451,25 @@ export function DesktopHeader({ isCollapsed, onMenuClick }: DesktopHeaderProps) 
           <input
             type="search"
             placeholder="Search matches, events, fans..."
-            className="h-10 w-80 rounded-xl border border-border/50 bg-background-subtle/50 pl-10 pr-4 text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none focus:border-border-focus focus:bg-background-elevated transition-all duration-200"
+            className="h-10 w-80 rounded-xl border border-border/40 bg-background-subtle/60 pl-10 pr-4 text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none focus:border-border-focus focus:bg-background-elevated transition-all duration-200"
           />
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <button
-          className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/5 transition-all duration-200"
+          className="relative flex h-9 w-9 items-center justify-center rounded-xl text-foreground-muted hover:text-foreground hover:bg-white/[0.04] transition-all duration-200"
           aria-label="Notifications"
         >
           <Bell className="h-[18px] w-[18px]" />
-          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
         </button>
 
-        <div className="h-5 w-px bg-border/50 mx-1" />
+        <div className="h-5 w-px bg-border/40 mx-1" />
 
-        <button className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-white/5 transition-all duration-200 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 transition-all duration-200 group-hover:ring-primary/30">
-            <User className="h-4 w-4 text-primary/80" />
+        <button className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-white/[0.04] transition-all duration-200 group">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-primary/5 ring-1 ring-primary/15 transition-all duration-200 group-hover:ring-primary/25">
+            <User className="h-4 w-4 text-primary/70" />
           </div>
           <span className="text-sm font-medium text-foreground">Guest</span>
         </button>

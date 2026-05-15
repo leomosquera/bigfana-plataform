@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Play, Star, ChevronRight, Trophy, Users, Zap, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, Play, ChevronRight, Trophy, Users, Zap, TrendingUp, Clock, MapPin } from "lucide-react";
 import { AppShell, PageContainer, Section, HeroSection } from "@/components/shell";
 import {
   Button,
@@ -11,63 +11,51 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-  Input,
   SegmentedControl,
   FilterChips,
-  Sheet,
-  Modal,
-  EmptyState,
-  LoadingState,
-  Skeleton,
-  SkeletonCard,
 } from "@/components/ui";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("all");
   const [activeFilters, setActiveFilters] = useState<string[]>(["live"]);
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <AppShell>
-      {/* Cinematic Hero Section with Stadium Atmosphere */}
-      <HeroSection height="lg" overlayIntensity={80}>
-        {/* Ambient stadium glow */}
-        <div className="absolute inset-0 gradient-stadium pointer-events-none" />
-        
-        <PageContainer className="pb-16 lg:pb-20">
-          <div className="space-y-10 animate-fade-up max-w-2xl">
-            {/* Live indicator badge - premium glass */}
-            <div className="inline-flex items-center gap-2.5 rounded-full bg-primary/8 border border-primary/20 px-4 py-2 backdrop-blur-xl shadow-lg shadow-primary/5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary shadow-lg shadow-primary/50" />
-              </span>
-              <span className="text-sm font-medium text-primary">3 Live Matches</span>
-            </div>
-            
-            {/* Hero headline - Editorial typography */}
-            <div className="space-y-5">
-              <h1 className="text-display-xl text-foreground">
-                <span className="block">Experience Football</span>
-                <span className="block bg-gradient-to-r from-foreground-muted via-foreground-subtle to-foreground-muted bg-clip-text text-transparent">
-                  Like Never Before
+      {/* Cinematic Hero - Immersive Stadium Atmosphere */}
+      <HeroSection height="lg" overlayIntensity={75}>
+        <PageContainer className="pb-20 lg:pb-28">
+          <div className="max-w-3xl animate-fade-up">
+            {/* Editorial overline */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="flex items-center gap-2.5 rounded-full bg-primary/10 border border-primary/20 px-4 py-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                 </span>
-              </h1>
-              
-              <p className="text-body-lg text-foreground-muted max-w-lg">
-                Join millions of passionate fans. Get live updates, exclusive content, and connect with your community.
-              </p>
+                <span className="text-xs font-semibold text-primary tracking-wide">LIVE NOW</span>
+              </div>
+              <span className="text-overline">El Clasico 2024</span>
             </div>
             
-            {/* CTA buttons - Premium styling */}
-            <div className="flex flex-wrap gap-4 pt-2">
-              <Button size="xl" className="group shadow-xl shadow-primary/20">
-                Get Started
+            {/* Hero headline - Editorial composition */}
+            <h1 className="text-display-xl text-foreground mb-6">
+              The Beautiful Game,{" "}
+              <span className="text-foreground-muted">Reimagined.</span>
+            </h1>
+            
+            <p className="text-body-lg text-foreground-muted max-w-xl mb-10">
+              Experience football like never before. Live scores, exclusive content, 
+              and a global community of passionate fans.
+            </p>
+            
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-4">
+              <Button size="xl" className="group">
+                Start Watching
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
-              <Button variant="secondary" size="xl" className="group">
-                <Play className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
+              <Button variant="ghost" size="xl" className="group">
+                <Play className="h-4 w-4" />
                 Watch Highlights
               </Button>
             </div>
@@ -75,295 +63,238 @@ export default function Home() {
         </PageContainer>
       </HeroSection>
 
-      <PageContainer className="space-y-20 lg:space-y-24">
-        {/* Stats Section - Premium glass cards with depth */}
-        <div className="grid grid-cols-3 gap-3 lg:gap-5 -mt-12 relative z-10">
+      <PageContainer className="space-y-16 lg:space-y-24">
+        {/* Stats Row - Editorial composition, not repetitive boxes */}
+        <div className="grid grid-cols-3 gap-4 lg:gap-6 -mt-16 relative z-10">
           {[
-            { icon: Trophy, label: "Live Matches", value: "24", trend: "+3 today", featured: true },
-            { icon: Users, label: "Active Fans", value: "1.2M", trend: "+12.5%", featured: false },
-            { icon: Zap, label: "Events Today", value: "156", trend: "Peak hour", featured: false },
-          ].map((stat, index) => (
-            <Card 
-              key={stat.label} 
-              variant={stat.featured ? "featured" : "glass"} 
-              padding="lg" 
-              className="text-center group"
+            { icon: Trophy, value: "24", label: "Live Matches", accent: true },
+            { icon: Users, value: "1.2M", label: "Active Fans", accent: false },
+            { icon: Zap, value: "156", label: "Events Today", accent: false },
+          ].map((stat) => (
+            <div 
+              key={stat.label}
+              className={`
+                relative p-5 lg:p-6 rounded-2xl text-center
+                ${stat.accent 
+                  ? "bg-gradient-to-b from-primary/12 to-primary/4 border border-primary/15" 
+                  : "bg-card/60 border border-border/40 backdrop-blur-xl"
+                }
+              `}
             >
-              <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 ${
-                stat.featured 
-                  ? "bg-primary/15 group-hover:bg-primary/20 shadow-lg shadow-primary/10" 
-                  : "bg-white/5 group-hover:bg-white/8"
-              }`}>
-                <stat.icon className={`h-5 w-5 transition-transform duration-300 group-hover:scale-110 ${
-                  stat.featured ? "text-primary" : "text-foreground-muted"
-                }`} />
-              </div>
+              <stat.icon className={`h-5 w-5 mx-auto mb-3 ${stat.accent ? "text-primary" : "text-foreground-subtle"}`} />
               <p className="text-display-md text-foreground mb-1">{stat.value}</p>
-              <p className="text-caption mb-2">{stat.label}</p>
-              <div className={`inline-flex items-center gap-1 text-xs font-medium ${
-                stat.featured ? "text-primary/80" : "text-foreground-subtle"
-              }`}>
-                <TrendingUp className="h-3 w-3" />
-                {stat.trend}
-              </div>
-            </Card>
+              <p className="text-caption">{stat.label}</p>
+            </div>
           ))}
         </div>
 
-        {/* Controls Demo - Refined spacing */}
-        <Section title="Quick Filters">
-          <div className="space-y-5">
-            <SegmentedControl
-              options={[
-                { value: "all", label: "All" },
-                { value: "live", label: "Live" },
-                { value: "upcoming", label: "Upcoming" },
-              ]}
-              value={activeTab}
-              onChange={setActiveTab}
-            />
-            
-            <FilterChips
-              options={[
-                { value: "live", label: "Live", count: 12 },
-                { value: "football", label: "Football", count: 45 },
-                { value: "basketball", label: "Basketball", count: 23 },
-                { value: "tennis", label: "Tennis", count: 8 },
-              ]}
-              value={activeFilters}
-              onChange={(v) => setActiveFilters(v as string[])}
-              multiple
-            />
-          </div>
+        {/* Quick Filters - Streamlined */}
+        <div className="space-y-4">
+          <SegmentedControl
+            options={[
+              { value: "all", label: "All" },
+              { value: "live", label: "Live" },
+              { value: "upcoming", label: "Upcoming" },
+            ]}
+            value={activeTab}
+            onChange={setActiveTab}
+          />
+          
+          <FilterChips
+            options={[
+              { value: "live", label: "Live", count: 12 },
+              { value: "football", label: "Football", count: 45 },
+              { value: "basketball", label: "Basketball", count: 23 },
+            ]}
+            value={activeFilters}
+            onChange={(v) => setActiveFilters(v as string[])}
+            multiple
+          />
+        </div>
+
+        {/* Featured Match - Hero card with cinematic treatment */}
+        <Section>
+          <Card variant="featured" padding="none" className="overflow-hidden">
+            <div className="relative">
+              {/* Atmospheric background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-transparent" />
+              <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
+              
+              <div className="relative p-6 lg:p-8">
+                {/* Match header */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/15 border border-primary/20">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+                      </span>
+                      <span className="text-xs font-semibold text-primary">LIVE</span>
+                    </div>
+                    <span className="text-overline">La Liga - Matchday 15</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-foreground-subtle">
+                    <Users className="h-3.5 w-3.5" />
+                    <span className="text-xs">2.4M watching</span>
+                  </div>
+                </div>
+
+                {/* Match content - Teams and score */}
+                <div className="flex items-center justify-between py-6 lg:py-10">
+                  {/* Home team */}
+                  <div className="flex-1 text-center">
+                    <div className="h-20 w-20 lg:h-24 lg:w-24 rounded-full bg-white/5 mx-auto mb-4 ring-2 ring-white/10" />
+                    <p className="text-heading-md text-foreground">Barcelona</p>
+                    <p className="text-caption mt-1">Home</p>
+                  </div>
+
+                  {/* Score */}
+                  <div className="px-8 lg:px-12 text-center">
+                    <p className="text-display-xl text-foreground">2 - 1</p>
+                    <div className="flex items-center justify-center gap-2 mt-3">
+                      <Clock className="h-3.5 w-3.5 text-primary" />
+                      <span className="text-label text-primary">78&apos;</span>
+                    </div>
+                  </div>
+
+                  {/* Away team */}
+                  <div className="flex-1 text-center">
+                    <div className="h-20 w-20 lg:h-24 lg:w-24 rounded-full bg-white/5 mx-auto mb-4 ring-2 ring-white/10" />
+                    <p className="text-heading-md text-foreground">Real Madrid</p>
+                    <p className="text-caption mt-1">Away</p>
+                  </div>
+                </div>
+
+                {/* Match footer */}
+                <div className="flex items-center justify-between pt-6 border-t border-border/30">
+                  <div className="flex items-center gap-2 text-foreground-subtle">
+                    <MapPin className="h-3.5 w-3.5" />
+                    <span className="text-body-sm">Camp Nou, Barcelona</span>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button variant="secondary" size="sm">Match Stats</Button>
+                    <Button size="sm">Watch Live</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
         </Section>
 
-        {/* Featured Matches - Premium cinematic cards */}
+        {/* Upcoming Matches - Varied composition */}
         <Section 
-          title="Featured Matches" 
-          subtitle="Top games happening right now"
+          title="Coming Up" 
+          subtitle="Don&apos;t miss these matches"
           action={
             <Button variant="ghost" size="sm" className="group">
-              View All
-              <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              View Schedule
+              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           }
         >
-          <div className="grid gap-5 lg:gap-6 md:grid-cols-2">
-            {/* Live Match Card - Featured variant */}
-            <Card variant="featured" padding="lg" className="group">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5 rounded-full bg-primary/10 px-3 py-1.5">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-                    </span>
-                    <span className="text-xs font-semibold text-primary uppercase tracking-wide">Live</span>
+          <div className="space-y-3">
+            {[
+              { home: "Man City", away: "Liverpool", league: "Premier League", time: "Tomorrow, 20:00", viewers: "Expected 3.1M" },
+              { home: "Bayern", away: "Dortmund", league: "Bundesliga", time: "Sat, 18:30", viewers: "Expected 2.8M" },
+              { home: "PSG", away: "Marseille", league: "Ligue 1", time: "Sun, 21:00", viewers: "Expected 1.9M" },
+            ].map((match, index) => (
+              <Card 
+                key={index} 
+                variant="interactive" 
+                padding="none"
+                className="group"
+              >
+                <div className="flex items-center gap-4 p-4 lg:p-5">
+                  {/* Teams */}
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="flex -space-x-2">
+                      <div className="h-10 w-10 rounded-full bg-white/5 ring-2 ring-background" />
+                      <div className="h-10 w-10 rounded-full bg-white/5 ring-2 ring-background" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-label text-foreground truncate">
+                        {match.home} vs {match.away}
+                      </p>
+                      <p className="text-caption truncate">{match.league}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5 text-foreground-subtle">
-                    <Sparkles className="h-3.5 w-3.5 text-warning" />
-                    <span className="text-xs font-medium">Featured</span>
-                  </div>
-                </div>
-                <CardTitle className="mt-3">Barcelona vs Real Madrid</CardTitle>
-                <CardDescription>La Liga - Matchday 15</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between py-8">
-                  <div className="text-center space-y-3">
-                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
-                    <p className="text-label">Barcelona</p>
-                  </div>
-                  <div className="text-center px-4">
-                    <p className="text-display-lg text-foreground font-bold tracking-tight">2 - 1</p>
-                    <p className="text-caption mt-2 text-primary/80 font-medium">78&apos;</p>
-                  </div>
-                  <div className="text-center space-y-3">
-                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
-                    <p className="text-label">Real Madrid</p>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="secondary" size="sm" className="flex-1">
-                  Match Details
-                </Button>
-                <Button size="sm" className="flex-1 shadow-lg shadow-primary/20">
-                  Watch Live
-                </Button>
-              </CardFooter>
-            </Card>
 
-            {/* Upcoming Match Card - Highlight variant */}
-            <Card variant="premium" padding="lg" className="group">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <span className="text-overline">Upcoming</span>
-                  <div className="flex items-center gap-1.5">
-                    <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-                    <span className="text-xs font-medium text-warning">Hot Match</span>
+                  {/* Time & viewers */}
+                  <div className="text-right shrink-0">
+                    <p className="text-label text-foreground">{match.time}</p>
+                    <p className="text-caption">{match.viewers}</p>
                   </div>
+
+                  {/* Action */}
+                  <Button variant="ghost" size="sm" className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <TrendingUp className="h-4 w-4" />
+                  </Button>
                 </div>
-                <CardTitle className="mt-3">Manchester City vs Liverpool</CardTitle>
-                <CardDescription>Premier League - Matchday 12</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between py-8">
-                  <div className="text-center space-y-3">
-                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
-                    <p className="text-label">Man City</p>
-                  </div>
-                  <div className="text-center px-4">
-                    <p className="text-heading-lg text-foreground-muted">VS</p>
-                    <p className="text-caption mt-2">Tomorrow, 20:00</p>
-                  </div>
-                  <div className="text-center space-y-3">
-                    <div className="h-16 w-16 rounded-full bg-white/5 mx-auto ring-2 ring-white/10 shadow-xl transition-all duration-300 group-hover:ring-white/20" />
-                    <p className="text-label">Liverpool</p>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" size="sm" className="flex-1">
-                  Set Reminder
-                </Button>
-                <Button size="sm" className="flex-1">
-                  Get Tickets
-                </Button>
-              </CardFooter>
-            </Card>
+              </Card>
+            ))}
           </div>
         </Section>
 
-        {/* Buttons Demo */}
-        <Section title="Button Variants">
-          <div className="space-y-6">
-            <div className="flex flex-wrap gap-3">
-              <Button variant="primary">Primary</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="destructive">Destructive</Button>
-              <Button isLoading>Loading</Button>
-            </div>
-            
-            <div className="flex flex-wrap items-center gap-3">
-              <Button size="sm">Small</Button>
-              <Button size="md">Medium</Button>
-              <Button size="lg">Large</Button>
-              <Button size="xl">Extra Large</Button>
-            </div>
+        {/* Quick Actions - Editorial grid */}
+        <Section title="Explore">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { icon: Trophy, label: "Leagues", desc: "Follow competitions" },
+              { icon: Users, label: "Community", desc: "Join discussions" },
+              { icon: Zap, label: "Live Events", desc: "Real-time action" },
+              { icon: TrendingUp, label: "Trending", desc: "What&apos;s hot" },
+            ].map((item) => (
+              <Card 
+                key={item.label} 
+                variant="interactive" 
+                padding="lg" 
+                className="group text-center"
+              >
+                <div className="h-12 w-12 rounded-xl bg-white/5 mx-auto mb-4 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                  <item.icon className="h-5 w-5 text-foreground-muted group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-label text-foreground mb-1">{item.label}</p>
+                <p className="text-caption">{item.desc}</p>
+              </Card>
+            ))}
           </div>
         </Section>
 
-        {/* Input Demo */}
-        <Section title="Form Elements">
-          <div className="grid gap-6 md:grid-cols-2">
-            <Input 
-              label="Email Address" 
-              placeholder="you@example.com" 
-              type="email"
-            />
-            <Input 
-              label="Password" 
-              placeholder="Enter your password" 
-              type="password"
-              hint="Must be at least 8 characters"
-            />
-            <Input 
-              label="Username" 
-              placeholder="Choose a username" 
-              error="This username is already taken"
-            />
-            <Input 
-              label="Disabled Input" 
-              placeholder="Cannot edit this" 
-              disabled
-            />
-          </div>
-        </Section>
-
-        {/* Dialogs Demo */}
-        <Section title="Sheets and Modals">
+        {/* UI Components Demo - Streamlined */}
+        <Section title="Buttons">
           <div className="flex flex-wrap gap-3">
-            <Button variant="secondary" onClick={() => setSheetOpen(true)}>
-              Open Sheet
-            </Button>
-            <Button variant="secondary" onClick={() => setModalOpen(true)}>
-              Open Modal
-            </Button>
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button isLoading>Loading</Button>
           </div>
         </Section>
 
-        {/* States Demo */}
-        <Section title="Loading and Empty States">
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card padding="none" variant="default">
-              <LoadingState text="Loading matches..." />
+        {/* Card Variants */}
+        <Section title="Card Variants">
+          <div className="grid md:grid-cols-3 gap-4">
+            <Card variant="default" padding="lg">
+              <CardHeader>
+                <CardTitle>Default Card</CardTitle>
+                <CardDescription>Standard surface with subtle border</CardDescription>
+              </CardHeader>
             </Card>
-            <Card padding="none" variant="default">
-              <EmptyState
-                variant="search"
-                title="No results found"
-                description="Try adjusting your search or filters to find what you are looking for."
-                action={<Button variant="secondary" size="sm">Clear Filters</Button>}
-              />
+            <Card variant="glass" padding="lg">
+              <CardHeader>
+                <CardTitle>Glass Card</CardTitle>
+                <CardDescription>Frosted glass with blur effect</CardDescription>
+              </CardHeader>
             </Card>
-          </div>
-        </Section>
-
-        {/* Skeleton Demo */}
-        <Section title="Skeleton Loaders">
-          <div className="grid gap-5 md:grid-cols-2">
-            <SkeletonCard />
-            <div className="space-y-4">
-              <Skeleton className="h-40 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
+            <Card variant="premium" padding="lg">
+              <CardHeader>
+                <CardTitle>Premium Card</CardTitle>
+                <CardDescription>Rich gradient with inner glow</CardDescription>
+              </CardHeader>
+            </Card>
           </div>
         </Section>
       </PageContainer>
-
-      {/* Sheet */}
-      <Sheet
-        open={sheetOpen}
-        onClose={() => setSheetOpen(false)}
-        title="Match Details"
-        description="View full information about this match"
-      >
-        <div className="space-y-4">
-          <p className="text-body-md text-foreground-muted">
-            This is a bottom sheet component perfect for mobile interactions, 
-            filters, and additional options.
-          </p>
-          <Button className="w-full" onClick={() => setSheetOpen(false)}>
-            Got It
-          </Button>
-        </div>
-      </Sheet>
-
-      {/* Modal */}
-      <Modal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Welcome to BigFana"
-        description="Join millions of passionate sports fans"
-      >
-        <div className="space-y-4">
-          <p className="text-body-md text-foreground-muted">
-            This is a centered modal dialog for important actions and confirmations.
-          </p>
-          <div className="flex gap-3">
-            <Button variant="secondary" className="flex-1" onClick={() => setModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button className="flex-1" onClick={() => setModalOpen(false)}>
-              Continue
-            </Button>
-          </div>
-        </div>
-      </Modal>
     </AppShell>
   );
 }
