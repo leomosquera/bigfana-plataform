@@ -2,7 +2,13 @@
 
 /* ============================================
    BigFana Design System - Cinematic Sports-Tech
+   Multi-Tenant Theme Architecture
    Inspiration: Apple TV + Nike + F1 + Linear
+   ============================================ */
+
+/* ============================================
+   THEME FOUNDATION
+   Tokenized system for multi-tenant branding
    ============================================ */
 
 :root {
@@ -30,37 +36,50 @@
   --radius-3xl: 1.5rem;
   --radius-full: 9999px;
 
-  /* ---- Cinematic Shadow System ---- */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(0, 0, 0, 0.25);
-  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.5), 0 12px 24px rgba(0, 0, 0, 0.3);
-  --shadow-2xl: 0 40px 100px rgba(0, 0, 0, 0.6), 0 20px 40px rgba(0, 0, 0, 0.35);
+  /* ---- Navigation Dimensions ---- */
+  --nav-height: 3.5rem;
+  --nav-height-desktop: 4rem;
+  --bottom-nav-height: 5rem;
+  --sidebar-width: 16rem;
+  --sidebar-collapsed: 4.5rem;
+  --sidebar-rail: 5rem;
   
-  /* Atmospheric glow effects */
-  --shadow-glow-soft: 0 0 80px rgba(255, 255, 255, 0.012);
-  --shadow-glow-primary: 0 0 60px rgba(220, 38, 38, 0.15);
-  --shadow-glow-primary-hover: 0 0 80px rgba(220, 38, 38, 0.25);
-  --shadow-glow-primary-strong: 0 0 120px rgba(220, 38, 38, 0.3);
+  /* ---- Safe Areas ---- */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
   
-  /* Premium card elevation */
-  --shadow-card: 
-    0 0 0 1px rgba(255, 255, 255, 0.025) inset,
-    0 1px 0 0 rgba(255, 255, 255, 0.02) inset,
-    0 4px 16px rgba(0, 0, 0, 0.25),
-    0 2px 4px rgba(0, 0, 0, 0.15);
-  --shadow-card-hover: 
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-    0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
-    0 20px 60px rgba(0, 0, 0, 0.4),
-    0 8px 20px rgba(0, 0, 0, 0.25);
-  --shadow-card-elevated: 
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-    0 32px 80px rgba(0, 0, 0, 0.5),
-    0 16px 32px rgba(0, 0, 0, 0.3);
-  
+  /* ---- Premium Transitions ---- */
+  --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ============================================
+     PRIMARY BRAND COLOR (Tenant Configurable)
+     Change --brand-hue to shift the entire palette
+     ============================================ */
+  --brand-hue: 0;
+  --brand-saturation: 84%;
+  --brand-lightness: 51%;
+
+  /* ---- Derived Primary Colors ---- */
+  --primary-h: var(--brand-hue);
+  --primary-s: var(--brand-saturation);
+  --primary-l: var(--brand-lightness);
+}
+
+/* ============================================
+   DARK MODE (Default)
+   Cinematic, immersive, premium
+   ============================================ */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
   /* ---- Deep Layered Background System ---- */
   --background: #020203;
   --background-subtle: #060607;
@@ -69,31 +88,35 @@
   --background-raised: #131315;
   --background-overlay: rgba(2, 2, 3, 0.92);
   
+  /* ---- Foreground Text ---- */
   --foreground: #fafafa;
   --foreground-muted: #a1a1aa;
   --foreground-subtle: #71717a;
   
-  /* ---- Primary (Cinematic Red) ---- */
-  --primary: #dc2626;
-  --primary-hover: #b91c1c;
+  /* ---- Primary (Brand Color) ---- */
+  --primary: hsl(var(--primary-h) var(--primary-s) var(--primary-l));
+  --primary-hover: hsl(var(--primary-h) var(--primary-s) calc(var(--primary-l) - 8%));
   --primary-foreground: #ffffff;
-  --primary-subtle: rgba(220, 38, 38, 0.06);
-  --primary-muted: rgba(220, 38, 38, 0.12);
-  --primary-glow: rgba(220, 38, 38, 0.2);
+  --primary-subtle: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.06);
+  --primary-muted: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.12);
+  --primary-glow: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2);
   
-  /* ---- Semantic Colors ---- */
+  /* ---- Cards & Surfaces ---- */
   --card: #080809;
   --card-hover: #0c0c0e;
   --card-foreground: #fafafa;
   
+  /* ---- Borders ---- */
   --border: rgba(255, 255, 255, 0.05);
   --border-subtle: rgba(255, 255, 255, 0.025);
   --border-focus: rgba(255, 255, 255, 0.1);
-  --border-glow: rgba(220, 38, 38, 0.2);
+  --border-glow: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2);
   
+  /* ---- Inputs ---- */
   --input: #080809;
   --input-focus: #0c0c0e;
   
+  /* ---- Ring (Focus) ---- */
   --ring: var(--primary);
   --ring-offset: var(--background);
   
@@ -123,26 +146,193 @@
   
   --accent: #18181b;
   --accent-foreground: #fafafa;
+
+  /* ---- Shadows (Dark Mode) ---- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.5), 0 12px 24px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 40px 100px rgba(0, 0, 0, 0.6), 0 20px 40px rgba(0, 0, 0, 0.35);
   
-  /* ---- Navigation ---- */
-  --nav-height: 3.5rem;
-  --nav-height-desktop: 4rem;
-  --bottom-nav-height: 5rem;
-  --sidebar-width: 16rem;
-  --sidebar-collapsed: 4.5rem;
+  /* Atmospheric glow effects */
+  --shadow-glow-soft: 0 0 80px rgba(255, 255, 255, 0.012);
+  --shadow-glow-primary: 0 0 60px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
+  --shadow-glow-primary-hover: 0 0 80px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.25);
+  --shadow-glow-primary-strong: 0 0 120px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.3);
   
-  /* ---- Safe Areas ---- */
-  --safe-area-top: env(safe-area-inset-top, 0px);
-  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-area-left: env(safe-area-inset-left, 0px);
-  --safe-area-right: env(safe-area-inset-right, 0px);
+  /* Premium card elevation */
+  --shadow-card: 
+    0 0 0 1px rgba(255, 255, 255, 0.025) inset,
+    0 1px 0 0 rgba(255, 255, 255, 0.02) inset,
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover: 
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.25);
+  --shadow-card-elevated: 
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 32px 80px rgba(0, 0, 0, 0.5),
+    0 16px 32px rgba(0, 0, 0, 0.3);
+
+  /* ---- Glass/Overlay Opacity ---- */
+  --glass-bg: rgba(8, 8, 9, 0.8);
+  --glass-bg-strong: rgba(8, 8, 9, 0.92);
+  --overlay-bg: rgba(0, 0, 0, 0.85);
+}
+
+/* ============================================
+   LIGHT MODE
+   Premium, editorial, spacious (NOT generic SaaS)
+   ============================================ */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* ---- Light Background System ---- */
+  --background: #fafafa;
+  --background-subtle: #f5f5f5;
+  --background-elevated: #ffffff;
+  --background-surface: #f0f0f0;
+  --background-raised: #e8e8e8;
+  --background-overlay: rgba(250, 250, 250, 0.95);
   
-  /* ---- Premium Transitions ---- */
-  --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 280ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ---- Foreground Text ---- */
+  --foreground: #09090b;
+  --foreground-muted: #52525b;
+  --foreground-subtle: #71717a;
+  
+  /* ---- Primary (Brand Color - slightly adjusted for light) ---- */
+  --primary: hsl(var(--primary-h) var(--primary-s) calc(var(--primary-l) - 5%));
+  --primary-hover: hsl(var(--primary-h) var(--primary-s) calc(var(--primary-l) - 12%));
+  --primary-foreground: #ffffff;
+  --primary-subtle: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.08);
+  --primary-muted: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
+  --primary-glow: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.12);
+  
+  /* ---- Cards & Surfaces ---- */
+  --card: #ffffff;
+  --card-hover: #fafafa;
+  --card-foreground: #09090b;
+  
+  /* ---- Borders ---- */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-focus: rgba(0, 0, 0, 0.15);
+  --border-glow: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.25);
+  
+  /* ---- Inputs ---- */
+  --input: #ffffff;
+  --input-focus: #fafafa;
+  
+  /* ---- Status Colors (adjusted for light) ---- */
+  --success: #16a34a;
+  --success-foreground: #ffffff;
+  --success-subtle: rgba(22, 163, 74, 0.1);
+  
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --warning-subtle: rgba(217, 119, 6, 0.1);
+  
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --destructive-subtle: rgba(220, 38, 38, 0.1);
+  
+  --info: #2563eb;
+  --info-foreground: #ffffff;
+  --info-subtle: rgba(37, 99, 235, 0.1);
+  
+  /* ---- Component Specific ---- */
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  
+  --muted: #f0f0f0;
+  --muted-foreground: #52525b;
+  
+  --accent: #f0f0f0;
+  --accent-foreground: #09090b;
+
+  /* ---- Shadows (Light Mode) ---- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.1), 0 6px 16px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.12), 0 12px 24px rgba(0, 0, 0, 0.08);
+  --shadow-2xl: 0 40px 100px rgba(0, 0, 0, 0.15), 0 20px 40px rgba(0, 0, 0, 0.1);
+  
+  --shadow-glow-soft: 0 0 80px rgba(0, 0, 0, 0.03);
+  --shadow-glow-primary: 0 0 60px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
+  --shadow-glow-primary-hover: 0 0 80px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
+  --shadow-glow-primary-strong: 0 0 120px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2);
+  
+  --shadow-card: 
+    0 0 0 1px rgba(0, 0, 0, 0.04) inset,
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 
+    0 0 0 1px rgba(0, 0, 0, 0.06) inset,
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.06);
+  --shadow-card-elevated: 
+    0 0 0 1px rgba(0, 0, 0, 0.06) inset,
+    0 32px 80px rgba(0, 0, 0, 0.12),
+    0 16px 32px rgba(0, 0, 0, 0.08);
+
+  /* ---- Glass/Overlay Opacity ---- */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg-strong: rgba(255, 255, 255, 0.95);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   CLUB THEME PRESETS
+   Apply via data-club attribute on html/body
+   ============================================ */
+
+/* BigFana Red (Default) */
+[data-club="bigfana"],
+:root {
+  --brand-hue: 0;
+  --brand-saturation: 84%;
+  --brand-lightness: 51%;
+}
+
+/* Blue Club (e.g., Chelsea, Everton style) */
+[data-club="blue"] {
+  --brand-hue: 217;
+  --brand-saturation: 91%;
+  --brand-lightness: 60%;
+}
+
+/* Green Club (e.g., Celtic, Sporting style) */
+[data-club="green"] {
+  --brand-hue: 142;
+  --brand-saturation: 71%;
+  --brand-lightness: 45%;
+}
+
+/* Gold Club (e.g., Wolves, Hull style) */
+[data-club="gold"] {
+  --brand-hue: 43;
+  --brand-saturation: 96%;
+  --brand-lightness: 56%;
+}
+
+/* Purple Club (e.g., Fiorentina style) */
+[data-club="purple"] {
+  --brand-hue: 271;
+  --brand-saturation: 76%;
+  --brand-lightness: 53%;
+}
+
+/* Sky Blue Club (e.g., Manchester City style) */
+[data-club="skyblue"] {
+  --brand-hue: 199;
+  --brand-saturation: 89%;
+  --brand-lightness: 48%;
 }
 
 /* ============================================
@@ -212,6 +402,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -220,11 +425,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  /* Subtle atmospheric texture for depth */
+  min-height: 100dvh;
+}
+
+/* Dark mode atmospheric background */
+[data-theme="dark"] body,
+:root:not([data-theme="light"]) body {
   background-image: 
-    radial-gradient(ellipse 100% 100% at 50% 0%, rgba(220, 38, 38, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(220, 38, 38, 0.015) 0%, transparent 40%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(220, 38, 38, 0.01) 0%, transparent 30%);
+    radial-gradient(ellipse 100% 100% at 50% 0%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 100% 0%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.015) 0%, transparent 40%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.01) 0%, transparent 30%);
+}
+
+/* Light mode subtle background */
+[data-theme="light"] body {
+  background-image: 
+    radial-gradient(ellipse 100% 100% at 50% 0%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.02) 0%, transparent 60%);
 }
 
 /* ============================================
@@ -320,7 +536,7 @@ body {
    ============================================ */
 
 .glass {
-  background: rgba(8, 8, 9, 0.8);
+  background: var(--glass-bg);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
@@ -331,8 +547,12 @@ body {
   -webkit-backdrop-filter: blur(20px);
 }
 
+[data-theme="light"] .glass-subtle {
+  background: rgba(0, 0, 0, 0.02);
+}
+
 .glass-strong {
-  background: rgba(8, 8, 9, 0.92);
+  background: var(--glass-bg-strong);
   backdrop-filter: blur(40px) saturate(200%);
   -webkit-backdrop-filter: blur(40px) saturate(200%);
 }
@@ -357,15 +577,15 @@ body {
 /* Stadium-inspired atmospheric gradients */
 .gradient-stadium {
   background: 
-    radial-gradient(ellipse 120% 80% at 50% -30%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 85% 10%, rgba(220, 38, 38, 0.04) 0%, transparent 35%),
-    radial-gradient(ellipse 50% 35% at 10% 90%, rgba(220, 38, 38, 0.025) 0%, transparent 30%);
+    radial-gradient(ellipse 120% 80% at 50% -30%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 85% 10%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.04) 0%, transparent 35%),
+    radial-gradient(ellipse 50% 35% at 10% 90%, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.025) 0%, transparent 30%);
 }
 
 .gradient-cinematic {
   background: radial-gradient(
     ellipse 100% 50% at 50% 0%,
-    rgba(220, 38, 38, 0.06) 0%,
+    hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.06) 0%,
     transparent 60%
   );
 }
@@ -407,12 +627,24 @@ body {
   box-shadow: var(--shadow-card-hover);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift:hover {
+    transform: none;
+  }
+}
+
 .hover-scale {
   transition: transform var(--transition-base);
 }
 
 .hover-scale:hover {
   transform: scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-scale:hover {
+    transform: none;
+  }
 }
 
 /* ============================================
@@ -423,6 +655,35 @@ body {
 .safe-bottom { padding-bottom: var(--safe-area-bottom); }
 .safe-left { padding-left: var(--safe-area-left); }
 .safe-right { padding-right: var(--safe-area-right); }
+
+/* Mobile-safe sticky positioning */
+.sticky-bottom-safe {
+  position: sticky;
+  bottom: 0;
+  padding-bottom: calc(var(--safe-area-bottom) + 1rem);
+}
+
+/* Keyboard-aware input positioning */
+@supports (padding-bottom: env(keyboard-inset-height)) {
+  .keyboard-aware {
+    padding-bottom: env(keyboard-inset-height, 0);
+    transition: padding-bottom 0.25s ease;
+  }
+}
+
+/* ============================================
+   Touch Target Utilities
+   ============================================ */
+
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.touch-target-lg {
+  min-height: 48px;
+  min-width: 48px;
+}
 
 /* ============================================
    Scrollbar Styling
@@ -457,6 +718,14 @@ body {
 
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -496,6 +765,16 @@ body {
   to { transform: translateY(0); }
 }
 
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -508,10 +787,10 @@ body {
 
 @keyframes glow-pulse {
   0%, 100% { 
-    box-shadow: 0 0 30px rgba(220, 38, 38, 0.2);
+    box-shadow: 0 0 30px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2);
   }
   50% { 
-    box-shadow: 0 0 50px rgba(220, 38, 38, 0.35);
+    box-shadow: 0 0 50px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.35);
   }
 }
 
@@ -536,21 +815,6 @@ body {
   }
 }
 
-@keyframes spotlight-sweep {
-  0% { transform: translateX(-100%) rotate(15deg); }
-  100% { transform: translateX(200%) rotate(15deg); }
-}
-
-@keyframes crowd-pulse {
-  0%, 100% { opacity: 0.03; }
-  50% { opacity: 0.06; }
-}
-
-@keyframes score-flash {
-  0%, 100% { text-shadow: 0 0 0 transparent; }
-  50% { text-shadow: 0 0 30px rgba(220, 38, 38, 0.5); }
-}
-
 @keyframes live-ring {
   0% { transform: scale(1); opacity: 0.8; }
   100% { transform: scale(2.5); opacity: 0; }
@@ -570,6 +834,14 @@ body {
 
 .animate-slide-up {
   animation: slide-up var(--transition-smooth) ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right var(--transition-smooth) ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left var(--transition-smooth) ease-out;
 }
 
 .animate-shimmer {
@@ -599,82 +871,28 @@ body {
   animation: breathe 4s ease-in-out infinite;
 }
 
-.animate-ambient {
-  animation: ambient-shift 15s ease-in-out infinite;
-}
-
-.animate-spotlight {
-  animation: spotlight-sweep 8s linear infinite;
-}
-
-.animate-crowd {
-  animation: crowd-pulse 3s ease-in-out infinite;
-}
-
-.animate-score-flash {
-  animation: score-flash 2s ease-in-out infinite;
-}
-
 .animate-live-ring {
   animation: live-ring 1.5s ease-out infinite;
 }
 
-/* ============================================
-   Stadium Atmosphere Effects
-   ============================================ */
-
-.stadium-atmosphere {
-  position: relative;
-  overflow: hidden;
-}
-
-.stadium-atmosphere::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(220, 38, 38, 0.05) 0%, transparent 40%),
-    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(0, 0, 0, 0.5) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.stadium-lights {
-  position: absolute;
-  inset: 0;
-  background: 
-    conic-gradient(from 180deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.02) 60deg, transparent 120deg),
-    conic-gradient(from 0deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.015) 60deg, transparent 120deg);
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-.crowd-silhouette {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 30%;
-  background: linear-gradient(to top, 
-    rgba(0, 0, 0, 0.8) 0%, 
-    rgba(0, 0, 0, 0.4) 40%, 
-    transparent 100%
-  );
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 20 Q5 12 10 15 T20 13 T30 16 T40 12 T50 14 T60 11 T70 15 T80 13 T90 16 T100 12 V20 Z' fill='black'/%3E%3C/svg%3E");
-  mask-size: 100% 100%;
-  pointer-events: none;
-}
-
-.spotlight-beam {
-  position: absolute;
-  top: -50%;
-  left: 50%;
-  width: 200px;
-  height: 200%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
-  transform: translateX(-50%) rotate(15deg);
-  pointer-events: none;
+/* Reduced motion: disable non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-scale-in,
+  .animate-slide-up,
+  .animate-slide-in-right,
+  .animate-slide-in-left,
+  .animate-float,
+  .animate-breathe {
+    animation: fade-in 0.01ms ease-out;
+  }
+  
+  .animate-shimmer,
+  .animate-pulse-soft,
+  .animate-glow-pulse,
+  .animate-live-ring {
+    animation: none;
+  }
 }
 
 /* ============================================
@@ -692,9 +910,16 @@ body {
   content: '';
   position: absolute;
   inset: -4px;
-  background: rgba(220, 38, 38, 0.15);
+  background: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
   border-radius: 9999px;
   animation: breathe 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-badge::before {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .live-dot {
@@ -720,55 +945,16 @@ body {
   animation: live-ring 1.5s ease-out infinite;
 }
 
-/* ============================================
-   Media Layer Effects
-   ============================================ */
-
-.media-overlay {
-  position: relative;
-}
-
-.media-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(2, 2, 3, 0.3) 0%,
-    rgba(2, 2, 3, 0.6) 50%,
-    rgba(2, 2, 3, 0.95) 100%
-  );
-  pointer-events: none;
-}
-
-.vignette {
-  position: relative;
-}
-
-.vignette::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  pointer-events: none;
-}
-
-.noise-texture {
-  position: relative;
-}
-
-.noise-texture::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.015;
-  pointer-events: none;
-  mix-blend-mode: overlay;
+@media (prefers-reduced-motion: reduce) {
+  .live-dot::after {
+    animation: none;
+    opacity: 0.5;
+    transform: scale(1.5);
+  }
 }
 
 /* ============================================
-   Premium Card Enhancements for Live Feel
+   Card Enhancements
    ============================================ */
 
 .card-live {
@@ -788,32 +974,90 @@ body {
   background-size: 200% 100%;
 }
 
-.card-glow-ambient {
-  position: relative;
-}
-
-.card-glow-ambient::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), transparent 50%, rgba(220, 38, 38, 0.05));
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card-glow-ambient:hover::after {
-  opacity: 1;
+@media (prefers-reduced-motion: reduce) {
+  .card-live::before {
+    animation: none;
+    background: var(--primary);
+  }
 }
 
 /* ============================================
-   Staggered animations
+   Theme Transition (prevents flash)
    ============================================ */
 
-.stagger-1 { animation-delay: 50ms; }
-.stagger-2 { animation-delay: 100ms; }
-.stagger-3 { animation-delay: 150ms; }
-.stagger-4 { animation-delay: 200ms; }
-.stagger-5 { animation-delay: 250ms; }
-.stagger-6 { animation-delay: 300ms; }
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: 
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease !important;
+}
+
+/* ============================================
+   Responsive Breakpoint Utilities
+   ============================================ */
+
+/* Mobile only */
+@media (max-width: 767px) {
+  .mobile-only { display: block; }
+  .tablet-up { display: none !important; }
+  .desktop-only { display: none !important; }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mobile-only { display: none !important; }
+  .tablet-only { display: block; }
+  .tablet-up { display: block; }
+  .desktop-only { display: none !important; }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .mobile-only { display: none !important; }
+  .tablet-only { display: none !important; }
+  .tablet-up { display: block; }
+  .desktop-only { display: block; }
+}
+
+/* ============================================
+   Content Layout Utilities
+   ============================================ */
+
+/* Main content area with proper sidebar offset */
+.main-content {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    padding-bottom: 0;
+    margin-left: var(--sidebar-collapsed);
+    transition: margin-left var(--transition-slow);
+  }
+  
+  .main-content.sidebar-expanded {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* ============================================
+   Z-Index Scale
+   ============================================ */
+
+:root {
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-toast: 80;
+}
