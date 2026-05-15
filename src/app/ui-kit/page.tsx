@@ -2307,11 +2307,11 @@ export default function UIKitPage() {
 
             <SubSection title="Avatars">
               <div className="flex items-center gap-4">
-                <Avatar fallback="JD" size="xs" />
-                <Avatar fallback="JD" size="sm" status="online" />
-                <Avatar fallback="JD" size="md" status="away" />
-                <Avatar fallback="JD" size="lg" status="live" />
-                <Avatar fallback="JD" size="xl" />
+                <Avatar fallback="LM" alt="Leonidas Mosquera" size="xs" />
+                <Avatar fallback="LM" alt="Leonidas Mosquera" size="sm" status="online" />
+                <Avatar fallback="LM" alt="Leonidas Mosquera" size="md" status="away" />
+                <Avatar fallback="LM" alt="Leonidas Mosquera" size="lg" status="live" />
+                <Avatar fallback="LM" alt="Leonidas Mosquera" size="xl" />
               </div>
             </SubSection>
           </Section>
